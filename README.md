@@ -5,12 +5,14 @@ La forma mas fácil de crear aplicaciones interactivas con el elemento canvas
 ##Uso
 
 enlazar archivos necesarios
-    &lt;script src="Class.js" type="text/javascript" &gt;&lt;/script&gt;
-    &lt;script src="events.js" type="text/javascript" &gt;&lt;/script&gt;
-    &lt;script src="Shape.js" type="text/javascript" &gt;&lt;/script&gt;
+
+    <script src="Class.js" type="text/javascript" ></script>
+    <script src="events.js" type="text/javascript" ></script>
+    <script src="Shape.js" type="text/javascript" ></script>
 
 Posicionar relativamente el &lt;canvas&gt;
-    &lt;canvas style="position: relative" id="canvas"&gt;&lt;/canvas&gt
+
+    <canvas style="position: relative" id="canvas"></canvas>
     
 crear una instancia de canvas-event pasando como argumento el id del elemento o directamente el elemento
 
@@ -21,4 +23,4 @@ crear una instancia de canvas-event pasando como argumento el id del elemento o 
     cv = document.getElementsByTagName("canvas")[0];
     Ce = Cevent(cv);
     
-[Documentacion](http://code.google.com/p/canvas-event-js/wiki/Objetos)
+[Documentación](http://code.google.com/p/canvas-event-js/wiki/Objetos)
