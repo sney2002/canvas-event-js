@@ -5,12 +5,12 @@ La forma mas fácil de crear aplicaciones interactivas con el elemento canvas
 ##Uso
 
 enlazar archivos necesarios
-    <script src="Class.js" type="text/javascript" ></script>
-	<script src="events.js" type="text/javascript" ></script>
-	<script src="Shape.js" type="text/javascript" ></script>
+    &lt;script src="Class.js" type="text/javascript" &gt;&lt;/script&gt;
+    &lt;script src="events.js" type="text/javascript" &gt;&lt;/script&gt;
+    &lt;script src="Shape.js" type="text/javascript" &gt;&lt;/script&gt;
 
 Posicionar relativamente el &lt;canvas&gt;
-    <canvas style="position: relative" id="canvas"></canvas>
+    &lt;canvas style="position: relative" id="canvas"&gt;&lt;/canvas&gt
     
 crear una instancia de canvas-event pasando como argumento el id del elemento o directamente el elemento
 
