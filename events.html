@@ -1,0 +1,138 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Eventos &mdash; canvas-event v1.0 documentation</title>
+    <link rel="stylesheet" href="_static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="canvas-event v1.0 documentation" href="index.html" />
+    <link rel="next" title="Eventos del ratón" href="mouse-events.html" />
+    <link rel="prev" title="Extendiendo canvas-event" href="extend.html" />
+   
+  
+  <link media="only screen and (max-device-width: 480px)" href="_static/small_flask.css" type= "text/css" rel="stylesheet" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="mouse-events.html" title="Eventos del ratón"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="extend.html" title="Extendiendo canvas-event"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">canvas-event v1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="eventos">
+<h1>Eventos<a class="headerlink" href="#eventos" title="Permalink to this headline">¶</a></h1>
+<p>La forma de asociar eventos con objetos es igual a la usada por <strong>jQuery</strong>.
+canvas-event soporta tanto eventos del <a class="reference internal" href="mouse-events.html"><em>ratón</em></a> como del <a class="reference internal" href="keyboard-events.html"><em>teclado</em></a>.</p>
+<p>Todos los manejadores de eventos reciben dos argumentos: la instancia de canvas-event
+a la que pertenece el objeto y el objeto evento.</p>
+<dl class="function">
+<dt id="bind">
+<tt class="descname">bind</tt><big>(</big><em>name</em>, <em>callback</em><big>)</big><a class="headerlink" href="#bind" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>name</strong> es el nombre del evento (<cite>mousedown, click, keydown...</cite>) y <tt class="docutils literal"><span class="pre">callback</span></tt> una función
+a ejecutar cuando ocurra dicho evento.</p>
+</dd></dl>
+
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">ce</span><span class="p">.</span><span class="nx">circle</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">30</span><span class="p">).</span><span class="nx">draw</span><span class="p">();</span>
+
+<span class="nx">ce</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="s2">&quot;mousedown&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">fill</span> <span class="o">=</span> <span class="s2">&quot;red&quot;</span><span class="p">;</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>Otra forma de llamar a <strong>bind</strong> es pasando un objeto <strong>evento =&gt; función</strong>:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">ce</span><span class="p">.</span><span class="nx">bind</span><span class="p">({</span>
+    <span class="nx">mousedown</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">fill</span> <span class="o">=</span> <span class="s2">&quot;red&quot;</span><span class="p">;</span>
+    <span class="p">},</span>
+
+    <span class="nx">mouseup</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">fill</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>Para cancelar la acción por defecto simplemente retornamos false:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">ce</span><span class="p">.</span><span class="nx">keydown</span><span class="p">(</span><span class="s2">&quot;f5&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper"><h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="extend.html" title="previous chapter">Extendiendo canvas-event</a></li>
+      <li>Next: <a href="mouse-events.html" title="next chapter">Eventos del ratón</a></li>
+  </ul></li>
+</ul>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/events.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+
+    <a href="http://github.com/sney2002/canvas-event-js"><img style="position: fixed; top: 0; right: 0; border: 0;"
+    src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
+  
+
+    <div class="footer">
+      &copy; Copyright 2011, Jhonatan Sneider Salguero Villa.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,73 @@
+Eventos del teclado
+===================
+
+Uno de los inconvenientes a la hora de usar eventos del teclado es identificar que tecla
+es presionada, con canvas-event este problema no existe ya que los eventos del teclado
+se asocian con una tecla o combinación de teclas.
+
+.. code-block:: javascript
+
+    ce.keydown("f1", function(c, e) {
+        alert("Lo siento, no hay ayuda disponible");
+    });
+    
+    ce.keydown("ctrl+g", function(){
+        alert("El documento ha sido guardado");
+    });
+
+**Nota**: Los eventos del teclado solo se disparan cuando el elemento canvas tiene el foco.
+
+A diferencia de los :doc:`eventos del ratón <mouse-events>`, **this** hace referencia
+a la instancia de canvas-event y no a algún objeto en particular.
+
+.. code-block:: javascript
+    
+    ovalo = ce.ellipse(50, 50, 20, 40).draw().get(-1);
+    
+    ce.mousedown(function(c, e) {
+        // this es el objeto afectado por el evento
+        console.log(this === ovalo);
+    });
+    
+    ce.keydown("a", function(c, e) {
+        // this es la instancia de canvas-event
+        console.log(this === ce);
+    });
+
+Las teclas soportatas son:
+
+* Una letra, numero, espacio o enter
+* left, right, up, down
+* Tecla de funcion f1, f2... f12
+* -, /, \*, +, ., /, \`, ~, !, @, #, $, %, ^, &, (, ), _, =, ', <, >, ?, ", | y ,
+* esc, tab, return, backspace, scroll, capslock, numlock, pause, insert, home, del, end, pageup, pagedown
+* ctrl, alt, shift
+
+Si se usan modificadores estos deben estar en orden alfabético:
+
+.. code-block:: javascript
+
+    // Correcto
+    ce.keydown("ctrl+shift+g", function(c, e) {
+        alert("Guardar como");
+    });
+    
+    // Incorrecto
+    ce.keydown("shift+ctrl+g", function(c, e) {
+        alert("Guardar como");
+    });
+    
+Propiedad focused
+=================
+
+La propiedad focused guarda una referencia al objeto que tiene el foco del ratón,
+de esta manera se pueden ejecutar acciones sobre este objeto.
+
+.. code-block:: javascript
+
+    ce.keydown("delete", function(c, e) {
+        if ( this.focused ) {
+            this.remove(this.focused);
+        }
+    });
+

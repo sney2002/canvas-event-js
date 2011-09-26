@@ -1,0 +1,176 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Objetos predefinidos &mdash; canvas-event v1.0 documentation</title>
+    <link rel="stylesheet" href="_static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="canvas-event v1.0 documentation" href="index.html" />
+    <link rel="next" title="Rutas SVG" href="svg.html" />
+    <link rel="prev" title="Introducción" href="intro.html" />
+   
+  
+  <link media="only screen and (max-device-width: 480px)" href="_static/small_flask.css" type= "text/css" rel="stylesheet" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="svg.html" title="Rutas SVG"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="intro.html" title="Introducción"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">canvas-event v1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="objetos-predefinidos">
+<h1>Objetos predefinidos<a class="headerlink" href="#objetos-predefinidos" title="Permalink to this headline">¶</a></h1>
+<p>canvas-event cuenta con varios objetos que representan formas básicas.</p>
+<dl class="class">
+<dt id="Cevent.rect">
+<em class="property">class </em><tt class="descclassname">Cevent.</tt><tt class="descname">rect</tt><big>(</big><em>x</em>, <em>y</em>, <em>width</em><span class="optional">[</span>, <em>height</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#Cevent.rect" title="Permalink to this definition">¶</a></dt>
+<dt id="Cevent.ellipse">
+<em class="property">class </em><tt class="descclassname">Cevent.</tt><tt class="descname">ellipse</tt><big>(</big><em>x</em>, <em>y</em>, <em>width</em><span class="optional">[</span>, <em>height</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#Cevent.ellipse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Crea un rectángulo u ovalo de medidas <strong>width * height</strong> en la posición <strong>x</strong>, <strong>y</strong>, al omitirse <strong>height</strong> se usara width.</p>
+</dd></dl>
+
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">ce</span><span class="p">.</span><span class="nx">rect</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">);</span><span class="c1">// Rectángulo de 20x30</span>
+
+<span class="nx">ce</span><span class="p">.</span><span class="nx">rect</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">40</span><span class="p">);</span> <span class="c1">// Cuadrado de 40x40</span>
+
+<span class="nx">ce</span><span class="p">.</span><span class="nx">ellipse</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">20</span><span class="p">);</span> <span class="c1">// Ovalo de 30x40</span>
+
+<span class="nx">ce</span><span class="p">.</span><span class="nx">ellipse</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">30</span><span class="p">);</span> <span class="c1">// Circulo de 30 radio</span>
+
+<span class="c1">// Dibujar todo</span>
+<span class="nx">ce</span><span class="p">.</span><span class="nx">draw</span><span class="p">();</span>
+</pre></div>
+</div>
+<dl class="class">
+<dt id="Cevent.circle">
+<em class="property">class </em><tt class="descclassname">Cevent.</tt><tt class="descname">circle</tt><big>(</big><em>x</em>, <em>y</em>, <em>radius</em><big>)</big><a class="headerlink" href="#Cevent.circle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Crea un circulo de radio <tt class="docutils literal"><span class="pre">radius</span></tt> en la posición <tt class="docutils literal"><span class="pre">x</span></tt>, <tt class="docutils literal"><span class="pre">y</span></tt>.</p>
+</dd></dl>
+
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">ce</span><span class="p">.</span><span class="nx">circle</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">40</span><span class="p">).</span><span class="nx">draw</span><span class="p">();</span>
+</pre></div>
+</div>
+<dl class="class">
+<dt id="Cevent.image">
+<em class="property">class </em><tt class="descclassname">Cevent.</tt><tt class="descname">image</tt><big>(</big><em>x</em>, <em>y</em>, <em>src</em><big>)</big><a class="headerlink" href="#Cevent.image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dibujar imagen ubicada en <tt class="docutils literal"><span class="pre">src</span></tt> en la posición <tt class="docutils literal"><span class="pre">x</span></tt>, <tt class="docutils literal"><span class="pre">y</span></tt>.</p>
+</dd></dl>
+
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">ce</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="s2">&quot;directorio/de/imagen.png&quot;</span><span class="p">).</span><span class="nx">draw</span><span class="p">();</span>
+</pre></div>
+</div>
+<dl class="class">
+<dt id="Cevent.arc">
+<em class="property">class </em><tt class="descclassname">Cevent.</tt><tt class="descname">arc</tt><big>(</big><em>x</em>, <em>y</em>, <em>radius</em>, <em>start-angle</em>, <em>end-angle</em><span class="optional">[</span>, <em>anticlockwise</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#Cevent.arc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Crear un arco con radio <tt class="docutils literal"><span class="pre">radius</span></tt> en la posición <strong>x</strong>, <strong>y</strong>. los ángulos
+se expresan en <a class="reference external" href="http://es.wikipedia.org/wiki/Sistema_sexagesimal">sexagesimal</a>.
+<a class="reference external" href="http://es.wikipedia.org/wiki/Sentido_del_reloj">anticlockwise</a> indica la dirección del arco.</p>
+</dd></dl>
+
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">ce</span><span class="p">.</span><span class="nx">arc</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+<span class="nx">ce</span><span class="p">.</span><span class="nx">arc</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nx">ce</span><span class="p">.</span><span class="nx">draw</span><span class="p">();</span>
+</pre></div>
+</div>
+<dl class="class">
+<dt id="Cevent.line">
+<em class="property">class </em><tt class="descclassname">Cevent.</tt><tt class="descname">line</tt><big>(</big><em>x1</em>, <em>y1</em>, <em>x2</em>, <em>y2</em><big>)</big><a class="headerlink" href="#Cevent.line" title="Permalink to this definition">¶</a></dt>
+<dd><p>Crear un segmento de linea entre los puntos (<strong>x1</strong>, <strong>y1</strong>) y (<strong>x2</strong>, <strong>y2</strong>).</p>
+</dd></dl>
+
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">ce</span><span class="p">.</span><span class="nx">line</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">110</span><span class="p">).</span><span class="nx">draw</span><span class="p">();</span>
+</pre></div>
+</div>
+<dl class="class">
+<dt id="Cevent.path">
+<em class="property">class </em><tt class="descclassname">Cevent.</tt><tt class="descname">path</tt><big>(</big><em>svg_path</em><big>)</big><a class="headerlink" href="#Cevent.path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Trazar una <a class="reference external" href="http://www.w3.org/TR/SVG/paths.html#PathData">ruta svg</a>
+(gracias a <a class="reference external" href="http://code.google.com/p/canto-js/">canto-js</a>).
+Para una descripción mas completa vea <a class="reference internal" href="svg.html"><em>Ruta SVG</em></a></p>
+</dd></dl>
+
+<div class="highlight-javascript"><div class="highlight"><pre><span class="c1">// Triangulo rectángulo en posición 50, 50</span>
+<span class="nx">ce</span><span class="p">.</span><span class="nx">path</span><span class="p">(</span><span class="s2">&quot;M 50 50 h 30 v 40 z&quot;</span><span class="p">).</span><span class="nx">draw</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper"><h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="intro.html" title="previous chapter">Introducción</a></li>
+      <li>Next: <a href="svg.html" title="next chapter">Rutas SVG</a></li>
+  </ul></li>
+</ul>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/objects.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+
+    <a href="http://github.com/sney2002/canvas-event-js"><img style="position: fixed; top: 0; right: 0; border: 0;"
+    src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
+  
+
+    <div class="footer">
+      &copy; Copyright 2011, Jhonatan Sneider Salguero Villa.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+    </div>
+  </body>
+</html>

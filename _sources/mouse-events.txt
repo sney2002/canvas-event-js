@@ -1,0 +1,53 @@
+Eventos del ratón
+=================
+
+Cada evento del ratón cuenta con un método del mismo nombre: **mousedown**,
+**click**, **focus**, **blur...**
+
+.. code-block:: javascript
+
+    ce.mousedown(function(c, e) {
+        this.alpha = .5;
+    });
+    
+Durante el evento **mousedown** las propiedades LEFT, RIGHT y CENTER permiten saber
+que botón fue presionado:
+
+.. code-block:: javascript
+
+    ce.mousedown(function(c, e) {
+        if (c.RIGHT) {
+            show_menu();
+        }
+        return false;
+    });
+    
+Eventos live
+============
+
+Para asociar un evento del ratón con un grupo de objetos, se llama el método correspondiente
+con un selector.
+
+.. code-block:: javascript
+
+    ce.click("circle", function(c, e) {
+        this.fill = "yellow";
+    });
+    
+De esta forma todos los objetos **circle** compartirán el mismo evento, incluso los
+creados posteriormente. Un selector puede ser:
+
+* El nombre del método usado para crear los objeto (circle, rect...).
+* "*" para todos los objetos.
+* **Un id**: identificador usado para diferenciar un grupo de objetos.
+
+.. code-block:: javascript
+
+    // marcar varios objetos con un identificador
+    ce.circle(50, 50, 30).setId("bomba");
+    ce.rect(50, 100, 40).setId("bomba");
+    ce.ellipse(150, 70, 30, 50).setId("bomba");
+    
+    ce.click("#bomba", function(c, e) {
+        alert("boom!");
+    });

@@ -1,0 +1,43 @@
+Eventos
+=======
+
+La forma de asociar eventos con objetos es igual a la usada por **jQuery**.
+canvas-event soporta tanto eventos del :doc:`ratón <mouse-events>` como del :doc:`teclado <keyboard-events>`.
+
+Todos los manejadores de eventos reciben dos argumentos: la instancia de canvas-event
+a la que pertenece el objeto y el objeto evento.
+
+.. js:function:: bind(name, callback)
+
+    **name** es el nombre del evento (`mousedown, click, keydown...`) y ``callback`` una función
+    a ejecutar cuando ocurra dicho evento.
+    
+.. code-block:: javascript
+
+    ce.circle(50, 50, 30).draw();
+    
+    ce.bind("mousedown", function(c, e) {
+        this.fill = "red";
+    });
+
+Otra forma de llamar a **bind** es pasando un objeto **evento => función**:
+
+.. code-block:: javascript
+
+    ce.bind({
+        mousedown: function(c, e) {
+            this.fill = "red";
+        },
+        
+        mouseup: function(c, e) {
+            this.fill = "black";
+        }
+    });
+    
+Para cancelar la acción por defecto simplemente retornamos false:
+
+.. code-block:: javascript
+    
+    ce.keydown("f5", function(c, e) {
+        return false;
+    });

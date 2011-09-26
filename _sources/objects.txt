@@ -1,0 +1,70 @@
+Objetos predefinidos
+====================
+
+canvas-event cuenta con varios objetos que representan formas básicas.
+
+.. js:class:: Cevent.rect(x, y, width[, height])
+              Cevent.ellipse(x, y, width[, height])
+   
+   Crea un rectángulo u ovalo de medidas **width * height** en la posición **x**, **y**, al omitirse **height** se usara width.
+
+.. code-block:: javascript
+
+        ce.rect(50, 50, 20, 30);// Rectángulo de 20x30
+
+        ce.rect(50, 150, 40); // Cuadrado de 40x40
+
+        ce.ellipse(100, 50, 30, 20); // Ovalo de 30x40
+
+        ce.ellipse(50, 150, 30); // Circulo de 30 radio
+
+        // Dibujar todo
+        ce.draw();
+   
+.. js:class:: Cevent.circle(x, y, radius)
+
+   Crea un circulo de radio ``radius`` en la posición ``x``, ``y``.
+   
+.. code-block:: javascript
+
+       ce.circle(50, 50, 40).draw();
+   
+.. js:class:: Cevent.image(x, y, src)
+
+   Dibujar imagen ubicada en ``src`` en la posición ``x``, ``y``.
+   
+.. code-block:: javascript
+     
+     ce.image(50, 50, "directorio/de/imagen.png").draw();
+     
+.. js:class:: Cevent.arc(x, y, radius, start-angle, end-angle[, anticlockwise])
+   
+   Crear un arco con radio ``radius`` en la posición **x**, **y**. los ángulos 
+   se expresan en `sexagesimal <http://es.wikipedia.org/wiki/Sistema_sexagesimal>`_.
+   `anticlockwise <http://es.wikipedia.org/wiki/Sentido_del_reloj>`_ indica la dirección del arco.
+   
+.. code-block:: javascript
+
+        ce.arc(50, 50, 30, 0, 120, false);
+        ce.arc(50, 100, 30, 0, 120, true);
+        
+        ce.draw();
+        
+.. js:class:: Cevent.line(x1, y1, x2, y2)
+
+        Crear un segmento de linea entre los puntos (**x1**, **y1**) y (**x2**, **y2**).
+        
+.. code-block:: javascript
+
+    ce.line(10, 10, 100, 110).draw();
+    
+.. js:class:: Cevent.path(svg_path)
+
+   Trazar una `ruta svg <http://www.w3.org/TR/SVG/paths.html#PathData>`_
+   (gracias a `canto-js <http://code.google.com/p/canto-js/>`_). 
+   Para una descripción mas completa vea :doc:`Ruta SVG<svg>`
+   
+.. code-block:: javascript
+
+    // Triangulo rectángulo en posición 50, 50
+    ce.path("M 50 50 h 30 v 40 z").draw();
