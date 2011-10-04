@@ -414,6 +414,27 @@ Cevent.fn = Cevent.prototype = {
 
         return this._shapes[ i ] || this._shapes;
     },
+    
+    // Retornar array con objetos que coinciden con selector
+    getAll: function( selector ) {
+        var ret = [], match = SELECTOR.exec( selector ), type, name;
+
+        if ( selector === "*" ) {
+            ret = this._shapes.slice(0);
+
+        } else if ( match ) {
+            type = match[1];
+            name = match[2];
+
+            each(this._shapes, function( shape ) {
+                if ( shape[ type ] === name ) {
+                    ret.push( shape );
+                }
+            });
+        }
+
+        return ret;
+    },
 
     // Remover Objeto
     remove: function( shape ) {
@@ -464,23 +485,8 @@ Cevent.fn = Cevent.prototype = {
 
     // Encontrar todos los objetos que coinciden con selector
     find: function( selector ) {
-        var ret = [], match = SELECTOR.exec( selector ), type, name;
-
-        if ( selector === "*" ) {
-            ret = this._shapes.slice(0);
-
-        } else if ( match ) {
-            type = match[1];
-            name = match[2];
-
-            each(this._shapes, function( shape ) {
-                if ( shape[ type ] === name ) {
-                    ret.push( shape );
-                }
-            });
-        }
-
-        return Cevent( this.cv, ret.length == 1 ? ret[0] : ret );
+        var ret = this.getAll(selector);
+        return Cevent( this.cv, ret.length == 1 ? ret[0] : ret);
     },
 
     // Modificar atributos de un Objeto
