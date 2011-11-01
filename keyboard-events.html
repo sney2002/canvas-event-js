@@ -6,26 +6,26 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Eventos del teclado &mdash; canvas-event v1.0 documentation</title>
-    <link rel="stylesheet" href="_static/flasky.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <title>Eventos del teclado &mdash; canvas-event-js v1 documentation</title>
+    <link rel="stylesheet" href="static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '1.0',
+        VERSION:     '1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
       };
     </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="canvas-event v1.0 documentation" href="index.html" />
+    <script type="text/javascript" src="static/jquery.js"></script>
+    <script type="text/javascript" src="static/underscore.js"></script>
+    <script type="text/javascript" src="static/doctools.js"></script>
+    <link rel="top" title="canvas-event-js v1 documentation" href="index.html" />
     <link rel="prev" title="Eventos del ratón" href="mouse-events.html" />
    
   
-  <link media="only screen and (max-device-width: 480px)" href="_static/small_flask.css" type= "text/css" rel="stylesheet" />
+  <link media="only screen and (max-device-width: 480px)" href="static/small_flask.css" type= "text/css" rel="stylesheet" />
 
   </head>
   <body>
@@ -38,7 +38,7 @@
         <li class="right" >
           <a href="mouse-events.html" title="Eventos del ratón"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">canvas-event v1.0 documentation</a> &raquo;</li> 
+        <li><a href="index.html">canvas-event-js v1 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -79,11 +79,11 @@ a la instancia de canvas-event y no a algún objeto en particular.</p>
 </div>
 <p>Las teclas soportatas son:</p>
 <ul class="simple">
-<li>Una letra, numero, espacio o enter</li>
+<li>Letra y numeros</li>
 <li>left, right, up, down</li>
-<li>Tecla de funcion f1, f2... f12</li>
+<li>Teclas de funcion f1, f2... f12</li>
 <li>-, /, *, +, ., /, `, ~, !, &#64;, #, $, %, ^, &amp;, (, ), _, =, &#8216;, &lt;, &gt;, ?, &#8221;, | y ,</li>
-<li>esc, tab, return, backspace, scroll, capslock, numlock, pause, insert, home, del, end, pageup, pagedown</li>
+<li>space, esc, tab, return, backspace, scroll, capslock, numlock, pause, insert, home, del, end, pageup, pagedown</li>
 <li>ctrl, alt, shift</li>
 </ul>
 <p>Si se usan modificadores estos deben estar en orden alfabético:</p>
@@ -92,7 +92,7 @@ a la instancia de canvas-event y no a algún objeto en particular.</p>
     <span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;Guardar como&quot;</span><span class="p">);</span>
 <span class="p">});</span>
 
-<span class="c1">// Incorrecto</span>
+<span class="c1">// Esto no se ejecutará</span>
 <span class="nx">ce</span><span class="p">.</span><span class="nx">keydown</span><span class="p">(</span><span class="s2">&quot;shift+ctrl+g&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;Guardar como&quot;</span><span class="p">);</span>
 <span class="p">});</span>
@@ -101,8 +101,8 @@ a la instancia de canvas-event y no a algún objeto en particular.</p>
 </div>
 <div class="section" id="propiedad-focused">
 <h1>Propiedad focused<a class="headerlink" href="#propiedad-focused" title="Permalink to this headline">¶</a></h1>
-<p>La propiedad focused guarda una referencia al objeto que tiene el foco del ratón,
-de esta manera se pueden ejecutar acciones sobre este objeto.</p>
+<p>La propiedad <strong>focused</strong> guarda una referencia al objeto que tiene el foco del ratón,
+así se pueden ejecutar acciones sobre éste.</p>
 <div class="highlight-javascript"><div class="highlight"><pre><span class="nx">ce</span><span class="p">.</span><span class="nx">keydown</span><span class="p">(</span><span class="s2">&quot;delete&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">if</span> <span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">focused</span> <span class="p">)</span> <span class="p">{</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">focused</span><span class="p">);</span>
@@ -131,7 +131,7 @@ de esta manera se pueden ejecutar acciones sobre este objeto.</p>
 </ul>
   <h3>This Page</h3>
   <ul class="this-page-menu">
-    <li><a href="_sources/keyboard-events.txt"
+    <li><a href="sources/keyboard-events.txt"
            rel="nofollow">Show Source</a></li>
   </ul>
 <div id="searchbox" style="display: none">
@@ -157,7 +157,7 @@ de esta manera se pueden ejecutar acciones sobre este objeto.</p>
   
 
     <div class="footer">
-      &copy; Copyright 2011, Jhonatan Sneider Salguero Villa.
+      &copy; Copyright 2011, Jhonatan Salguero Villa.
       Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
     </div>
   </body>

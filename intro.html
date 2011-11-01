@@ -6,27 +6,27 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Introducción &mdash; canvas-event v1.0 documentation</title>
-    <link rel="stylesheet" href="_static/flasky.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <title>Introducción &mdash; canvas-event-js v1 documentation</title>
+    <link rel="stylesheet" href="static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '1.0',
+        VERSION:     '1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
       };
     </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="canvas-event v1.0 documentation" href="index.html" />
+    <script type="text/javascript" src="static/jquery.js"></script>
+    <script type="text/javascript" src="static/underscore.js"></script>
+    <script type="text/javascript" src="static/doctools.js"></script>
+    <link rel="top" title="canvas-event-js v1 documentation" href="index.html" />
     <link rel="next" title="Objetos predefinidos" href="objects.html" />
-    <link rel="prev" title="Bienvenido a la documentación de canvas-event’s" href="index.html" />
+    <link rel="prev" title="Bienvenido a canvas-event" href="index.html" />
    
   
-  <link media="only screen and (max-device-width: 480px)" href="_static/small_flask.css" type= "text/css" rel="stylesheet" />
+  <link media="only screen and (max-device-width: 480px)" href="static/small_flask.css" type= "text/css" rel="stylesheet" />
 
   </head>
   <body>
@@ -40,9 +40,9 @@
           <a href="objects.html" title="Objetos predefinidos"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="index.html" title="Bienvenido a la documentación de canvas-event’s"
+          <a href="index.html" title="Bienvenido a canvas-event"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">canvas-event v1.0 documentation</a> &raquo;</li> 
+        <li><a href="index.html">canvas-event-js v1 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -85,7 +85,7 @@ a personas familiarizadas con este framework.</p>
 </div>
 <div class="section" id="pasos-previos">
 <h1>Pasos previos<a class="headerlink" href="#pasos-previos" title="Permalink to this headline">¶</a></h1>
-<p>canvas-event funciona en todos los navegadores modernos que tengan soporte para html5.
+<p>canvas-event funciona en todos los navegadores modernos con soporte html5.
 Los únicos requisitos son:</p>
 <ul class="simple">
 <li>Posicionar relativamente el elemento canvas.</li>
@@ -104,7 +104,17 @@ Los únicos requisitos son:</p>
 
 <span class="nt">&lt;canvas</span> <span class="na">id=</span><span class="s">&quot;canvas&quot;</span> <span class="nt">&gt;&lt;/canvas&gt;</span>
 
-<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;directorio/canvas-event.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="c">&lt;!-- scripts canvas-event-js --&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;js/Class.js&quot;</span> <span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span> <span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;js/events.js&quot;</span> <span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span> <span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;js/Shape.js&quot;</span> <span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span> <span class="nt">&gt;&lt;/script&gt;</span>
+
+<span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span> <span class="nt">&gt;</span>
+    <span class="c1">// crear instancia canvas-event</span>
+    <span class="nx">ce</span> <span class="o">=</span> <span class="nx">Cevent</span><span class="p">(</span><span class="s2">&quot;canvas&quot;</span><span class="p">);</span>
+    <span class="p">...</span>
+    <span class="p">...</span>
+<span class="nt">&lt;/script&gt;</span>
 <span class="nt">&lt;/body&gt;</span>
 <span class="nt">&lt;/html&gt;</span>
 </pre></div>
@@ -125,13 +135,13 @@ Los únicos requisitos son:</p>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="index.html" title="previous chapter">Bienvenido a la documentación de canvas-event&#8217;s</a></li>
+      <li>Previous: <a href="index.html" title="previous chapter">Bienvenido a canvas-event</a></li>
       <li>Next: <a href="objects.html" title="next chapter">Objetos predefinidos</a></li>
   </ul></li>
 </ul>
   <h3>This Page</h3>
   <ul class="this-page-menu">
-    <li><a href="_sources/intro.txt"
+    <li><a href="sources/intro.txt"
            rel="nofollow">Show Source</a></li>
   </ul>
 <div id="searchbox" style="display: none">
@@ -152,12 +162,12 @@ Los únicos requisitos son:</p>
       <div class="clearer"></div>
     </div>
 
-    <a href="http://github.com/'canvas-event-js'"><img style="position: fixed; top: 0; right: 0; border: 0;"
+    <a href="http://github.com/sney2002/canvas-event-js"><img style="position: fixed; top: 0; right: 0; border: 0;"
     src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
   
 
     <div class="footer">
-      &copy; Copyright 2011, Jhonatan Sneider Salguero Villa.
+      &copy; Copyright 2011, Jhonatan Salguero Villa.
       Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
     </div>
   </body>
