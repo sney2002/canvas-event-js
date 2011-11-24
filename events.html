@@ -53,14 +53,11 @@
             
   <div class="section" id="eventos">
 <h1>Eventos<a class="headerlink" href="#eventos" title="Permalink to this headline">¶</a></h1>
-<p>La forma de asociar eventos con objetos es igual a la usada por <strong>jQuery</strong>.
-canvas-event soporta tanto eventos del <a class="reference internal" href="mouse-events.html"><em>ratón</em></a> como del <a class="reference internal" href="keyboard-events.html"><em>teclado</em></a>.</p>
-<p>Todos los manejadores de eventos reciben dos argumentos: la instancia de canvas-event
-a la que pertenece el objeto y el objeto evento.</p>
+<p>canvas-event soporta tanto eventos del <a class="reference internal" href="mouse-events.html"><em>ratón</em></a> como del <a class="reference internal" href="keyboard-events.html"><em>teclado</em></a>.</p>
 <dl class="function">
 <dt id="bind">
 <tt class="descname">bind</tt><big>(</big><em>name</em>, <em>callback</em><big>)</big><a class="headerlink" href="#bind" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>name</strong> es el nombre del evento (<cite>mousedown, click, keydown...</cite>) y <tt class="docutils literal"><span class="pre">callback</span></tt> una función
+<dd><p><strong>name</strong> es el nombre del evento (<cite>mousedown, click, keydown...</cite>) y <strong>callback</strong> una función
 a ejecutar cuando ocurra dicho evento.</p>
 </dd></dl>
 
@@ -70,12 +67,14 @@ a ejecutar cuando ocurra dicho evento.</p>
     <span class="k">this</span><span class="p">.</span><span class="nx">fill</span> <span class="o">=</span> <span class="s2">&quot;red&quot;</span><span class="p">;</span>
 <span class="p">});</span>
 
-<span class="nx">ce</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="s2">&quot;mouseover mouseout&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+<span class="nx">ce</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="s2">&quot;mouseover mouseout&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="nx">e</span><span class="p">){</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">fill</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">fill</span> <span class="o">==</span> <span class="s2">&quot;red&quot;</span> <span class="o">?</span> <span class="s2">&quot;black&quot;</span> <span class="o">:</span> <span class="s2">&quot;red&quot;</span><span class="p">;</span>
 <span class="p">});</span>
 </pre></div>
 </div>
-<p>Otra forma de llamar a <strong>bind</strong> es pasando un objeto <strong>evento =&gt; función</strong>:</p>
+<p><strong>Nota</strong> Los manejadores de eventos reciben dos argumentos: la instancia de canvas-event
+a la que pertenece el objeto y el objeto evento.</p>
+<p><strong>bind</strong> también puede ser llamado con un objeto <strong>evento =&gt; función</strong>:</p>
 <div class="highlight-javascript"><div class="highlight"><pre><span class="nx">ce</span><span class="p">.</span><span class="nx">bind</span><span class="p">({</span>
     <span class="nx">mousedown</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">fill</span> <span class="o">=</span> <span class="s2">&quot;red&quot;</span><span class="p">;</span>
@@ -87,7 +86,7 @@ a ejecutar cuando ocurra dicho evento.</p>
 <span class="p">});</span>
 </pre></div>
 </div>
-<p>Para cancelar la acción por defecto simplemente retornamos false:</p>
+<p>Para cancelar la acción por defecto retornamos false:</p>
 <div class="highlight-javascript"><div class="highlight"><pre><span class="nx">ce</span><span class="p">.</span><span class="nx">keydown</span><span class="p">(</span><span class="s2">&quot;f5&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
 <span class="p">});</span>

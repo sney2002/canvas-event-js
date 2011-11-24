@@ -18,6 +18,7 @@ Contenido:
    events
    mouse-events
    keyboard-events
+   find
 
 Indices and tables
 ==================

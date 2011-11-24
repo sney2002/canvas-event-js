@@ -22,6 +22,7 @@
     <script type="text/javascript" src="static/underscore.js"></script>
     <script type="text/javascript" src="static/doctools.js"></script>
     <link rel="top" title="canvas-event-js v1 documentation" href="index.html" />
+    <link rel="next" title="Selectores y los métodos find y getAll" href="find.html" />
     <link rel="prev" title="Eventos del ratón" href="mouse-events.html" />
    
   
@@ -36,6 +37,9 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
+          <a href="find.html" title="Selectores y los métodos find y getAll"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
           <a href="mouse-events.html" title="Eventos del ratón"
              accesskey="P">previous</a> |</li>
         <li><a href="index.html">canvas-event-js v1 documentation</a> &raquo;</li> 
@@ -49,9 +53,9 @@
             
   <div class="section" id="eventos-del-teclado">
 <h1>Eventos del teclado<a class="headerlink" href="#eventos-del-teclado" title="Permalink to this headline">¶</a></h1>
-<p>Uno de los inconvenientes a la hora de usar eventos del teclado es identificar que tecla
-es presionada, con canvas-event este problema no existe ya que los eventos del teclado
-se asocian con una tecla o combinación de teclas.</p>
+<p>Uno de los inconvenientes a la hora de usar eventos del teclado es identificar la tecla
+presionada, con canvas-event este problema no existe, ya que estos se asocian con
+una tecla o combinación de teclas.</p>
 <div class="highlight-javascript"><div class="highlight"><pre><span class="nx">ce</span><span class="p">.</span><span class="nx">keydown</span><span class="p">(</span><span class="s2">&quot;f1&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;Lo siento, no hay ayuda disponible&quot;</span><span class="p">);</span>
 <span class="p">});</span>
@@ -62,24 +66,9 @@ se asocian con una tecla o combinación de teclas.</p>
 </pre></div>
 </div>
 <p><strong>Nota</strong>: Los eventos del teclado solo se disparan cuando el elemento canvas tiene el foco.</p>
-<p>A diferencia de los <a class="reference internal" href="mouse-events.html"><em>eventos del ratón</em></a>, <strong>this</strong> hace referencia
-a la instancia de canvas-event y no a algún objeto en particular.</p>
-<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">ovalo</span> <span class="o">=</span> <span class="nx">ce</span><span class="p">.</span><span class="nx">ellipse</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">40</span><span class="p">).</span><span class="nx">draw</span><span class="p">().</span><span class="nx">get</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
-
-<span class="nx">ce</span><span class="p">.</span><span class="nx">mousedown</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
-    <span class="c1">// this es el objeto afectado por el evento</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span> <span class="o">===</span> <span class="nx">ovalo</span><span class="p">);</span>
-<span class="p">});</span>
-
-<span class="nx">ce</span><span class="p">.</span><span class="nx">keydown</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
-    <span class="c1">// this es la instancia de canvas-event</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span> <span class="o">===</span> <span class="nx">ce</span><span class="p">);</span>
-<span class="p">});</span>
-</pre></div>
-</div>
-<p>Las teclas soportatas son:</p>
+<p>Las teclas soportadas son:</p>
 <ul class="simple">
-<li>Letra y numeros</li>
+<li>Letras y numeros</li>
 <li>left, right, up, down</li>
 <li>Teclas de funcion f1, f2... f12</li>
 <li>-, /, *, +, ., /, `, ~, !, &#64;, #, $, %, ^, &amp;, (, ), _, =, &#8216;, &lt;, &gt;, ?, &#8221;, | y ,</li>
@@ -98,10 +87,25 @@ a la instancia de canvas-event y no a algún objeto en particular.</p>
 <span class="p">});</span>
 </pre></div>
 </div>
+<p>A diferencia de los <a class="reference internal" href="mouse-events.html"><em>eventos del ratón</em></a>, <strong>this</strong> hace referencia
+a la instancia de canvas-event y no a un objeto en particular.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">ovalo</span> <span class="o">=</span> <span class="nx">ce</span><span class="p">.</span><span class="nx">ellipse</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">40</span><span class="p">).</span><span class="nx">draw</span><span class="p">().</span><span class="nx">get</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+
+<span class="nx">ce</span><span class="p">.</span><span class="nx">mousedown</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// this es el objeto afectado por el evento</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span> <span class="o">===</span> <span class="nx">ovalo</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="nx">ce</span><span class="p">.</span><span class="nx">keydown</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// this es la instancia de canvas-event</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span> <span class="o">===</span> <span class="nx">ce</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="propiedad-focused">
 <h1>Propiedad focused<a class="headerlink" href="#propiedad-focused" title="Permalink to this headline">¶</a></h1>
-<p>La propiedad <strong>focused</strong> guarda una referencia al objeto que tiene el foco del ratón,
+<p>La propiedad <strong>focused</strong> guarda una referencia al objeto con el foco del ratón,
 así se pueden ejecutar acciones sobre éste.</p>
 <div class="highlight-javascript"><div class="highlight"><pre><span class="nx">ce</span><span class="p">.</span><span class="nx">keydown</span><span class="p">(</span><span class="s2">&quot;delete&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">if</span> <span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">focused</span> <span class="p">)</span> <span class="p">{</span>
@@ -127,6 +131,7 @@ así se pueden ejecutar acciones sobre éste.</p>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
       <li>Previous: <a href="mouse-events.html" title="previous chapter">Eventos del ratón</a></li>
+      <li>Next: <a href="find.html" title="next chapter">Selectores y los métodos find y getAll</a></li>
   </ul></li>
 </ul>
   <h3>This Page</h3>

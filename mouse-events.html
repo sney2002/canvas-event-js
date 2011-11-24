@@ -53,8 +53,8 @@
             
   <div class="section" id="eventos-del-raton">
 <h1>Eventos del ratón<a class="headerlink" href="#eventos-del-raton" title="Permalink to this headline">¶</a></h1>
-<p>Cada evento del ratón cuenta con un método del mismo nombre: <strong>mousedown</strong>,
-<strong>click</strong>, <strong>focus</strong>, <strong>blur...</strong></p>
+<p>Cada evento del ratón cuenta con un método del mismo nombre: <strong>mouseover</strong>, <strong>mouseout</strong>,
+<strong>mousedown</strong>, <strong>click</strong>, <strong>dblclick</strong>, <strong>focus</strong>, <strong>blur</strong>.</p>
 <div class="highlight-javascript"><div class="highlight"><pre><span class="nx">ce</span><span class="p">.</span><span class="nx">mousedown</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">alpha</span> <span class="o">=</span> <span class="p">.</span><span class="mi">5</span><span class="p">;</span>
 <span class="p">});</span>
@@ -73,8 +73,8 @@ que botón fue presionado:</p>
 </div>
 <div class="section" id="eventos-live">
 <h1>Eventos live<a class="headerlink" href="#eventos-live" title="Permalink to this headline">¶</a></h1>
-<p>Para asociar un evento del ratón con un grupo de objetos, se llama el método correspondiente
-con un selector.</p>
+<p>Podemos asociar eventos del ratón con grupos de objetos pasando un <a class="reference internal" href="find.html"><em>selector</em></a> al método
+correspondiente.</p>
 <div class="highlight-javascript"><div class="highlight"><pre><span class="nx">ce</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s2">&quot;circle&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">fill</span> <span class="o">=</span> <span class="s2">&quot;yellow&quot;</span><span class="p">;</span>
 <span class="p">});</span>
@@ -84,8 +84,8 @@ con un selector.</p>
 creados posteriormente. Un selector puede ser:</p>
 <ul class="simple">
 <li>El nombre del método usado para crear los objeto (circle, rect...).</li>
+<li><strong>id</strong>: identificador usado para diferenciar un grupo de objetos.</li>
 <li>&#8220;*&#8221; para todos los objetos.</li>
-<li><strong>Un id</strong>: identificador usado para diferenciar un grupo de objetos.</li>
 </ul>
 <div class="highlight-javascript"><div class="highlight"><pre><span class="c1">// marcar varios objetos con un identificador</span>
 <span class="nx">ce</span><span class="p">.</span><span class="nx">circle</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">30</span><span class="p">).</span><span class="nx">setId</span><span class="p">(</span><span class="s2">&quot;bomba&quot;</span><span class="p">);</span>

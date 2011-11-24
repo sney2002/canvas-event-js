@@ -54,14 +54,14 @@
   <div class="section" id="rutas-svg">
 <h1>Rutas SVG<a class="headerlink" href="#rutas-svg" title="Permalink to this headline">¶</a></h1>
 <p>Para crear figuras mas complejas que simples <a class="reference internal" href="objects.html#Cevent.rect" title="Cevent.rect"><tt class="xref js js-class docutils literal"><span class="pre">rectángulos</span></tt></a> y
-<a class="reference internal" href="objects.html#Cevent.circle" title="Cevent.circle"><tt class="xref js js-class docutils literal"><span class="pre">círculos</span></tt></a> podemos hacer uso del objeto path para dibujar
+<a class="reference internal" href="objects.html#Cevent.circle" title="Cevent.circle"><tt class="xref js js-class docutils literal"><span class="pre">círculos</span></tt></a> podemos hacer uso del objeto <a class="reference internal" href="objects.html#Cevent.path" title="Cevent.path"><tt class="xref js js-class docutils literal"><span class="pre">path</span></tt></a> para dibujar
 rutas SVG.</p>
 <p>Una ruta SVG es un string que describe el camino a seguir para crear una figura.</p>
 <div class="highlight-javascript"><div class="highlight"><pre><span class="nx">ce</span><span class="p">.</span><span class="nx">path</span><span class="p">(</span><span class="s2">&quot;m50 50h30v-10h-10v-10h-10v10h-10v10&quot;</span><span class="p">).</span><span class="nx">draw</span><span class="p">();</span>
 </pre></div>
 </div>
 <p>El ejemplo anterior dibuja un <a class="reference external" href="http://es.wikipedia.org/wiki/Tetromin%C3%B3">tetrominó</a> T
-y se puede interpretar como:</p>
+y se interpreta como:</p>
 <ul class="simple">
 <li>mover a coordenadas x=50, y=50</li>
 <li>linea horizontal de 30px</li>

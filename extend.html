@@ -53,8 +53,8 @@
             
   <div class="section" id="extendiendo-canvas-event">
 <h1>Extendiendo canvas-event<a class="headerlink" href="#extendiendo-canvas-event" title="Permalink to this headline">¶</a></h1>
-<p>Si se encuentra creando varias veces las misma figuras, puede extender canvas-event.</p>
-<p>Para agregar una figura nueva, se debe extender uno de los objetos predefinidos:
+<p>Si necesita crear varias veces la misma figura, extender canvas-event es la mejor opción.</p>
+<p>Para agregar una figura nueva, debe extender un objetos predefinidos:
 <tt class="docutils literal"><span class="pre">Circle,</span> <span class="pre">Rect,</span> <span class="pre">Line,</span> <span class="pre">Path,</span> <span class="pre">Image,</span> <span class="pre">Arc</span></tt> o <tt class="docutils literal"><span class="pre">Shape</span></tt> y sobreescribir los métodos
 init y draw.</p>
 <p><strong>Nota:</strong> se debe llamar el método init del objeto padre (mediante _super) con
@@ -62,7 +62,7 @@ los argumentos apropiados para heredar.</p>
 <div class="highlight-javascript"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">Tetro</span> <span class="o">=</span> <span class="nx">Cevent</span><span class="p">.</span><span class="nx">Shape</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
     <span class="nx">init</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">scale</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">scale</span> <span class="o">=</span> <span class="nx">scale</span><span class="p">;</span>
-        <span class="c1">// se debe llamar método padre con argumentos apropiados</span>
+        <span class="c1">// llamar método padre con argumentos apropiados</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">_super</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">);</span>
     <span class="p">},</span>
 
@@ -72,7 +72,7 @@ los argumentos apropiados para heredar.</p>
 
         <span class="nx">ctx</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span> <span class="c1">// guardar estado actual del canvas</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">applyStyle</span><span class="p">(</span><span class="nx">ctx</span><span class="p">);</span> <span class="c1">// aplicar estilo</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">setTransform</span><span class="p">(</span> <span class="nx">ctx</span> <span class="p">);</span> <span class="c1">// aplicar transformaciones</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">setTransform</span><span class="p">(</span><span class="nx">ctx</span><span class="p">);</span> <span class="c1">// aplicar transformaciones</span>
 
 
         <span class="c1">// dibujar tetrominó según escala</span>
@@ -92,7 +92,7 @@ los argumentos apropiados para heredar.</p>
 <span class="nx">Cevent</span><span class="p">.</span><span class="nx">register</span><span class="p">(</span><span class="s2">&quot;car&quot;</span><span class="p">,</span> <span class="nx">Car</span><span class="p">);</span>
 
 <span class="c1">// usar objeto nuevo</span>
-<span class="nx">ce</span><span class="p">.</span><span class="nx">car</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">10</span><span class="p">).</span><span class="nx">draw</span><span class="p">();</span>
+<span class="nx">ce</span><span class="p">.</span><span class="nx">car</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">10</span><span class="p">).</span><span class="nx">drag</span><span class="p">().</span><span class="nx">draw</span><span class="p">();</span>
 </pre></div>
 </div>
 </div>

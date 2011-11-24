@@ -1,9 +1,9 @@
 Extendiendo canvas-event
 ========================
 
-Si se encuentra creando varias veces las misma figuras, puede extender canvas-event.
+Si necesita crear varias veces la misma figura, extender canvas-event es la mejor opción.
 
-Para agregar una figura nueva, se debe extender uno de los objetos predefinidos:
+Para agregar una figura nueva, debe extender un objetos predefinidos:
 ``Circle, Rect, Line, Path, Image, Arc`` o ``Shape`` y sobreescribir los métodos
 init y draw.
 
@@ -15,7 +15,7 @@ los argumentos apropiados para heredar.
     var Tetro = Cevent.Shape.extend({
         init: function(x, y, scale) {
             this.scale = scale;
-            // se debe llamar método padre con argumentos apropiados
+            // llamar método padre con argumentos apropiados
             this._super(x, y);
         },
 
@@ -25,7 +25,7 @@ los argumentos apropiados para heredar.
 
             ctx.save(); // guardar estado actual del canvas
             this.applyStyle(ctx); // aplicar estilo
-            this.setTransform( ctx ); // aplicar transformaciones
+            this.setTransform(ctx); // aplicar transformaciones
 
 
             // dibujar tetrominó según escala
@@ -45,4 +45,4 @@ los argumentos apropiados para heredar.
     Cevent.register("car", Car);
     
     // usar objeto nuevo
-    ce.car(30, 30, 10).draw();
+    ce.car(30, 30, 10).drag().draw();

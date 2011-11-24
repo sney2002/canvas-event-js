@@ -2,7 +2,7 @@ Rutas SVG
 =========
 
 Para crear figuras mas complejas que simples :js:class:`rectángulos <Cevent.rect>` y 
-:js:class:`círculos <Cevent.circle>` podemos hacer uso del objeto path para dibujar
+:js:class:`círculos <Cevent.circle>` podemos hacer uso del objeto :js:class:`path <Cevent.path>` para dibujar
 rutas SVG.
 
 Una ruta SVG es un string que describe el camino a seguir para crear una figura.
@@ -12,7 +12,7 @@ Una ruta SVG es un string que describe el camino a seguir para crear una figura.
     ce.path("m50 50h30v-10h-10v-10h-10v10h-10v10").draw();
     
 El ejemplo anterior dibuja un `tetrominó <http://es.wikipedia.org/wiki/Tetromin%C3%B3>`_ T
-y se puede interpretar como:
+y se interpreta como:
 
 * mover a coordenadas x=50, y=50
 * linea horizontal de 30px

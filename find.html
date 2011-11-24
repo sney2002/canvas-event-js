@@ -1,0 +1,138 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Selectores y los métodos find y getAll &mdash; canvas-event-js v1 documentation</title>
+    <link rel="stylesheet" href="static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="static/jquery.js"></script>
+    <script type="text/javascript" src="static/underscore.js"></script>
+    <script type="text/javascript" src="static/doctools.js"></script>
+    <link rel="top" title="canvas-event-js v1 documentation" href="index.html" />
+    <link rel="prev" title="Eventos del teclado" href="keyboard-events.html" />
+   
+  
+  <link media="only screen and (max-device-width: 480px)" href="static/small_flask.css" type= "text/css" rel="stylesheet" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="keyboard-events.html" title="Eventos del teclado"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">canvas-event-js v1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="selectores-y-los-metodos-find-y-getall">
+<h1>Selectores y los métodos find y getAll<a class="headerlink" href="#selectores-y-los-metodos-find-y-getall" title="Permalink to this headline">¶</a></h1>
+<p>Usando el método find, es posible seleccionar un grupo de objetos y aplicarles
+un método o manejador de evento. para esto debemos pasar un selector:</p>
+<ul class="simple">
+<li><strong>tipo</strong>: Corresponde con el nombre del método usado para crear el objeto (circle, rect, line...).</li>
+<li><strong>id</strong>: Un nombre que damos a un objeto con el fin de diferenciarlo de otros del mismo tipo.</li>
+</ul>
+<p>Imagine que esta creando un buscaminas, habrán varios rectángulos, unos serán minas y otros no.
+Todos los rectángulos tienen el mismo color, pero los rectángulos <strong>mina</strong> explotan y terminan el juego,
+mientras los demás aumentan los puntos del jugador.</p>
+<p><strong>Nota</strong> Al igual que en css, el símbolo <strong>#</strong> indica que <strong>mina</strong> y <strong>safe</strong> son id.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">ce</span><span class="p">.</span><span class="nx">rect</span><span class="p">(</span><span class="nx">i</span><span class="o">*</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">).</span><span class="nx">setId</span><span class="p">(</span><span class="s2">&quot;mina&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">ce</span><span class="p">.</span><span class="nx">rect</span><span class="p">(</span><span class="nx">i</span><span class="o">*</span><span class="mi">10</span><span class="p">;</span> <span class="mi">10</span><span class="p">;</span> <span class="mi">10</span><span class="p">).</span><span class="nx">setId</span><span class="p">(</span><span class="s2">&quot;safe&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// seleccionar rectángulos, tanto #mina como #safe</span>
+<span class="nx">ce</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s2">&quot;rect&quot;</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;fill&quot;</span><span class="p">,</span> <span class="s2">&quot;green&quot;</span><span class="p">);</span>
+
+<span class="c1">// rectángulos #mina explotan</span>
+<span class="nx">ce</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s2">&quot;#mina&quot;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;Boom!&quot;</span><span class="p">);</span>
+    <span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;Game Over&quot;</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="c1">// rectángulos #safe aumentan un punto</span>
+<span class="nx">ce</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s2">&quot;#safe&quot;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">puntos</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>Por otro lado el método <strong>getAll</strong> retorna un array con los objetos seleccionados con el selector</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="c1">// encontrar y retornar los objetos rect dibujados hasta el momento</span>
+<span class="kd">var</span> <span class="nx">rects</span> <span class="o">=</span> <span class="nx">ce</span><span class="p">.</span><span class="nx">findAll</span><span class="p">(</span><span class="s2">&quot;rect&quot;</span><span class="p">);</span>
+
+<span class="c1">// obtener el primer circulo dibujado</span>
+<span class="kd">var</span> <span class="nx">first_circle</span> <span class="o">=</span> <span class="nx">ce</span><span class="p">.</span><span class="nx">getAll</span><span class="p">(</span><span class="s2">&quot;circle&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">];</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper"><h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="keyboard-events.html" title="previous chapter">Eventos del teclado</a></li>
+  </ul></li>
+</ul>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="sources/find.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+
+    <a href="http://github.com/sney2002/canvas-event-js"><img style="position: fixed; top: 0; right: 0; border: 0;"
+    src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
+  
+
+    <div class="footer">
+      &copy; Copyright 2011, Jhonatan Salguero Villa.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+    </div>
+  </body>
+</html>
