@@ -23,4 +23,4 @@ crear una instancia de canvas-event pasando como argumento el id del elemento o 
     cv = document.getElementsByTagName("canvas")[0];
     Ce = Cevent(cv);
     
-[Documentación](http://code.google.com/p/canvas-event-js/wiki/Objetos)
+[Documentación](http://sney2002.github.com/canvas-event-js)
