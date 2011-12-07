@@ -1,0 +1,186 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Métodos &mdash; canvas-event-js v1 documentation</title>
+    <link rel="stylesheet" href="static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="static/jquery.js"></script>
+    <script type="text/javascript" src="static/underscore.js"></script>
+    <script type="text/javascript" src="static/doctools.js"></script>
+    <link rel="top" title="canvas-event-js v1 documentation" href="index.html" />
+    <link rel="prev" title="Selectores y los métodos find y getAll" href="find.html" />
+   
+  
+  <link media="only screen and (max-device-width: 480px)" href="static/small_flask.css" type= "text/css" rel="stylesheet" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="find.html" title="Selectores y los métodos find y getAll"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">canvas-event-js v1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="metodos">
+<h1>Métodos<a class="headerlink" href="#metodos" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="Cevent.get">
+<tt class="descclassname">Cevent.</tt><tt class="descname">get</tt><big>(</big><em>i</em><big>)</big><a class="headerlink" href="#Cevent.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retorna el objeto almacenado en la posición <strong>i</strong> (acepta índices negativos)</p>
+</dd></dl>
+
+<div class="highlight-javascript"><div class="highlight"><pre><span class="c1">// obtener ultimo objeto</span>
+<span class="kd">var</span> <span class="nx">rect</span> <span class="o">=</span> <span class="nx">ce</span><span class="p">.</span><span class="nx">rect</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">15</span><span class="p">).</span><span class="nx">get</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+</pre></div>
+</div>
+<dl class="function">
+<dt id="Cevent.addId">
+<tt class="descclassname">Cevent.</tt><tt class="descname">addId</tt><big>(</big><em>id</em><big>)</big><a class="headerlink" href="#Cevent.addId" title="Permalink to this definition">¶</a></dt>
+<dd><p>Marca el ultimo objeto dibujado con un identificador que lo diferencia de objetos
+del mismo tipo, cada objeto solo puede tener un identificador.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Cevent.find">
+<tt class="descclassname">Cevent.</tt><tt class="descname">find</tt><big>(</big><em>selector</em><big>)</big><a class="headerlink" href="#Cevent.find" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retorna un nueva instancia de canvas-event, capaz de manipular todos los objetos que
+coinciden con el <a class="reference internal" href="find.html"><em>selector</em></a>.</p>
+</dd></dl>
+
+<div class="highlight-javascript"><div class="highlight"><pre><span class="c1">// cambiar color a todos los circulos</span>
+<span class="nx">ce</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s2">&quot;circle&quot;</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;fill&quot;</span><span class="p">,</span> <span class="s2">&quot;green&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<dl class="function">
+<dt id="Cevent.getAll">
+<tt class="descclassname">Cevent.</tt><tt class="descname">getAll</tt><big>(</big><em>selector</em><big>)</big><a class="headerlink" href="#Cevent.getAll" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retorna los objetos que coinciden con el <a class="reference internal" href="find.html"><em>selector</em></a>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Cevent.remove">
+<tt class="descclassname">Cevent.</tt><tt class="descname">remove</tt><big>(</big><em>Shape</em><big>)</big><a class="headerlink" href="#Cevent.remove" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remueve la figura de la lista de objetos a ser dibujados.</p>
+</dd></dl>
+
+<div class="highlight-javascript"><div class="highlight"><pre><span class="c1">// Eliminar objeto seleccionado</span>
+<span class="nx">ce</span><span class="p">.</span><span class="nx">keydown</span><span class="p">(</span><span class="s2">&quot;del&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">c</span><span class="p">.</span><span class="nx">focused</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">c</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="nx">c</span><span class="p">.</span><span class="nx">focused</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<dl class="function">
+<dt id="Cevent.attr">
+<tt class="descclassname">Cevent.</tt><tt class="descname">attr</tt><big>(</big><em>attr</em>, <em>value</em><big>)</big><a class="headerlink" href="#Cevent.attr" title="Permalink to this definition">¶</a></dt>
+<dt>
+<tt class="descclassname">Cevent.</tt><tt class="descname">attr</tt><big>(</big><em>{attr: value</em>, <em>attr: value}</em><big>)</big></dt>
+<dd><p>Cambia o establece un atributo del ultimo objeto dibujado u objetos retornados por find.</p>
+<p>los atributos que comparten todo los objetos y sus valor por defecto son:</p>
+<ul class="simple">
+<li><strong>fill</strong>: #000</li>
+<li><strong>stroke</strong>: &#8220;&#8221;</li>
+<li><strong>tx/ty</strong>: 0 (traslación en x/y)</li>
+<li><strong>scaleX/scaleY</strong>: 1</li>
+<li><strong>skewX/skewY</strong>: 0</li>
+<li><strong>lineWidth</strong>: 1</li>
+<li><strong>lineJoin</strong>: miter</li>
+<li><strong>lineCap</strong>: butt</li>
+<li><strong>alpha</strong>: 1 (transparencia)</li>
+<li><strong>rotation</strong>: 0 (rotación en grados sexadesimales)</li>
+<li><strong>composite</strong>: source-over</li>
+<li><strong>shadowColor</strong>: rgba(0, 0, 0, 0.0)</li>
+<li><strong>shadowOffsetX/shadowOffsetY</strong>: 0</li>
+<li><strong>shadowBlur</strong>: 0</li>
+</ul>
+<p>Aparte de estos podemos definir atributos propios:</p>
+</dd></dl>
+
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">ce</span><span class="p">.</span><span class="nx">circle</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">20</span><span class="p">).</span><span class="nx">attr</span><span class="p">({</span>
+    <span class="c1">// color verde</span>
+    <span class="nx">fill</span><span class="o">:</span> <span class="s2">&quot;green&quot;</span><span class="p">,</span>
+    <span class="c1">// específico de este objeto</span>
+    <span class="nx">velx</span><span class="o">:</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">(),</span>
+    <span class="nx">vely</span><span class="o">:</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span>
+<span class="p">}).</span><span class="nx">draw</span><span class="p">();</span>
+</pre></div>
+</div>
+<dl class="function">
+<dt id="Cevent.loop">
+<tt class="descclassname">Cevent.</tt><tt class="descname">loop</tt><big>(</big><em>function</em><big>)</big><a class="headerlink" href="#Cevent.loop" title="Permalink to this definition">¶</a></dt>
+<dd><p>llama la funcion especificada aproximadamente 60 veces por segundo y luego redibuja el lienzo.</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper"><h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="find.html" title="previous chapter">Selectores y los métodos find y getAll</a></li>
+  </ul></li>
+</ul>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="sources/methods.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+
+    <a href="http://github.com/sney2002/canvas-event-js"><img style="position: fixed; top: 0; right: 0; border: 0;"
+    src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
+  
+
+    <div class="footer">
+      &copy; Copyright 2011, Jhonatan Salguero Villa.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+    </div>
+  </body>
+</html>

@@ -3,6 +3,59 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+.. raw:: html
+
+    <canvas id="canvas" width="650"></canvas>
+    <script src="static/Class.js" type="text/javascript"></script>
+    <script src="static/events.js" type="text/javascript"></script>
+    <script src="static/Shape.js" type="text/javascript"></script>
+   <script type="text/javascript" language="javascript" charset="utf-8">
+   // <![CDATA[
+       (function() {
+            var ce = Cevent("canvas"),
+                width = ce.width,
+                height = ce.height;
+            
+            function randint(i) {
+                return parseInt(Math.random()*i);
+            }
+            
+            function randcolor() {
+                return "rgb(" + [randint(255), randint(255), randint(255)] + ")";
+            }
+            
+            for (var i = 0; i < 50; i++) {
+                ce.circle(randint(width), randint(height), randint(25)+5)
+                .attr({
+                    fill: randcolor(),
+                    alpha: Math.random(),
+                    velx: Math.random(),
+                    vely: Math.random(),
+                });
+            }
+            
+            
+            var circles = ce.getAll("circle");
+            
+            ce.loop(function(c){
+                var circle, l = circles.length;
+
+                for (var i = 0; i < l; i++) {
+                    circle = circles[i];
+                    circle.x += circle.velx;
+                    circle.y += circle.vely;
+                    
+                    if (circle.x >= width || circle.x <= 0)
+                        circle.velx *= -1;
+                    if (circle.y >= height || circle.y <= 0)
+                        circle.vely *= -1;
+                }
+            });
+
+       }())
+   // ]]>
+   </script>
+
 Bienvenido a canvas-event
 =========================
 
@@ -19,6 +72,14 @@ Contenido:
    mouse-events
    keyboard-events
    find
+   methods
+   
+Ejemplos:
+
+.. toctree::
+   
+   example-remove
+   example-loop
 
 Indices and tables
 ==================
