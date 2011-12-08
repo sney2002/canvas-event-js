@@ -144,9 +144,9 @@ var math = Math,
 
             } else {
                 for ( attr in attrs ) {
-                    if ( hasOwnProperty.call(defaultStyle, attr) ) {
+                    //if ( hasOwnProperty.call(defaultStyle, attr) ) {
                         this[ attr ] = attrs[ attr ];
-                    }
+                    //}
                 }
             }
 
@@ -179,15 +179,16 @@ var math = Math,
 
         // aplicar transformaciones al lienzo
         setTransform: function( ctx ) {
-            var scaleX = this.scaleX,
-                scaleY = this.scaleY,
-                skewX = this.skewX,
-                skewY = this.skewY,
+            var zoom = Cevent.__zoom,
+                scaleX = this.scaleX * zoom,
+                scaleY = this.scaleY * zoom,
+                skewX = this.skewX * zoom,
+                skewY = this.skewY * zoom,
                 angle = this.rotation * DEGREE,
                 s = sin( angle ),
                 c = cos( angle ),
-                dx = this.tx,
-                dy = this.ty,
+                dx = this.tx * zoom,
+                dy = this.ty * zoom,
                 
                 // Es mas rápido multiplicar las matrices y usar transform
                 // que llamar individualmente a rotate, translate, scale
@@ -196,11 +197,16 @@ var math = Math,
                 m12 = s * scaleX + c * skewY,
                 m22 = s * skewX + c * scaleY;
 
-            ctx.transform( m11, m12, m21, m22, dx, dy );
+            ctx.setTransform( m11, m12, m21, m22, dx, dy );
         },
 
         draw: function ( ctx ) {
             throw new Error("El método draw no se ha implementado");
+        },
+        
+        fill_or_stroke: function(ctx) {
+            if (  this.fill  ) { ctx.fill(); }
+            if ( this.stroke ) { ctx.stroke(); }
         },
 
         // retorna true si point se encuentra dentro del Objeto
@@ -208,7 +214,7 @@ var math = Math,
         hitTest: function( point ) {
             this.draw( testCtx );
             return testCtx.isPointInPath( point.x, point.y );
-        }        
+        }
     }),
 
     /*********************
@@ -228,7 +234,6 @@ var math = Math,
                 w = this.w,
                 h = this.h;
 
-            ctx.save();
             this.applyStyle( ctx );
             this.setTransform( ctx );
 
@@ -247,7 +252,6 @@ var math = Math,
             if (  this.fill  ) { ctx.fill(); }
             if ( this.stroke ) { ctx.stroke(); }
 
-            ctx.restore();
         },
 
         hitTest: function( point ) {
@@ -303,8 +307,6 @@ var math = Math,
             var x = this.x,
                 y = this.y;
 
-
-            ctx.save();
             this.applyStyle( ctx );
             this.setTransform( ctx );
 
@@ -316,7 +318,6 @@ var math = Math,
                 ctx.closePath();
             }
 
-            ctx.restore();
         }
     }),
 
@@ -335,7 +336,6 @@ var math = Math,
                 c_y = C * h;
 
             
-            ctx.save();            
             this.applyStyle( ctx );
             this.setTransform( ctx );
 
@@ -352,7 +352,6 @@ var math = Math,
             if ( this.fill ) { ctx.fill(); }
             if ( this.stroke ) { ctx.stroke(); }
 
-            ctx.restore();
         },
 
         hitTest: Shape.prototype.hitTest
@@ -374,7 +373,6 @@ var math = Math,
             var x = this.x,
                 y = this.y;
 
-            ctx.save();
             this.applyStyle(ctx);
             this.setTransform( ctx );
 
@@ -392,7 +390,6 @@ var math = Math,
             if (  this.fill  ) { ctx.fill(); }
             if ( this.stroke ) { ctx.stroke(); }
 
-            ctx.restore();
         }
     }),
 
@@ -410,7 +407,6 @@ var math = Math,
             var x = this.x,
                 y = this.y;
 
-            ctx.save();
             this.applyStyle(ctx);
             this.setTransform( ctx );
 
@@ -425,8 +421,6 @@ var math = Math,
 
             if (  this.fill  ) { ctx.fill(); }
             if ( this.stroke ) { ctx.stroke(); }
-
-            ctx.restore();
 
         },
 
@@ -470,7 +464,6 @@ var math = Math,
             var x = this.x,
                 y = this.y;
 
-            ctx.save();
             this.applyStyle( ctx );
             this.setTransform( ctx );
 
@@ -478,8 +471,6 @@ var math = Math,
             ctx.moveTo( x, y );
             ctx.lineTo( this.x2, this.y2);
             ctx.stroke();
-
-            ctx.restore();
 
         },
 
@@ -1103,7 +1094,6 @@ var math = Math,
         draw: function ( ctx ) {
         var svgpath = this.svgpath, i, l;
 
-            ctx.save();    
             this.applyStyle( ctx );
             this.setTransform( ctx );
 
@@ -1117,7 +1107,6 @@ var math = Math,
             if ( this.fill ) { ctx.fill(); }
             if ( this.stroke ) { ctx.stroke(); }
 
-            ctx.restore();
         }
         
     });
@@ -1128,6 +1117,8 @@ extend(Cevent, {
     // distancia entre dos puntos
     // distance( {x:100, y:45}, {x:13, y:99} ) => 102.3
     distance: distance,
+    
+    __zoom: 1,
     
     Shape: Shape,
     // iniciar encadenamiento, ejemplo:

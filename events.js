@@ -28,6 +28,7 @@ var window = this,
     func = "function",
     string = "string",
     array = "array",
+    object = "object",
     addEventListener = "addEventListener",
     
     // para resolver problema con eventos del teclado
@@ -37,7 +38,6 @@ var window = this,
     eventQueue = [],
 
     currentCanvas = null,
-    needRedraw,
     curDrag = null,
     inDrag = false,
 
@@ -45,6 +45,18 @@ var window = this,
     uuid = 0,
     Cache = {},
 
+    // Mejor rendimiento de las animaciones
+    requestAnimFrame = (function(){
+      return window.requestAnimationFrame       || 
+              window.webkitRequestAnimationFrame || 
+              window.mozRequestAnimationFrame    || 
+              window.oRequestAnimationFrame      || 
+              window.msRequestAnimationFrame     || 
+              function(/* function */ callback, /* DOMElement */ fps){
+                window.setTimeout(callback, 1000 / 60);
+              };
+    })(),
+    
     /* Algunas funciones útiles */
     is = function( obj, type ) {
         return toString.call( obj ).slice(8, -1).toLowerCase() == type;
@@ -112,15 +124,15 @@ var window = this,
     // Ejecutar sobre obj las funciones almacenados en handlers
     handleEvent = function( obj, handlers, context, event ) {
         var handler, i = 0, ret = true;
-
+        
+        context.ctx.save();
+        context.ctx.scale(context.__zoom, context.__zoom);
         for ( ;(handler = handlers[i++]); ) {
-            // Posiblemente algo cambio
-            needRedraw = true;
             if ( handler.call(obj, context, event) === false ) {
                 ret = false;
             }
         }
-        
+        context.ctx.restore();
         if ( !ret ) {
             event.preventDefault();
         }
@@ -168,8 +180,8 @@ var window = this,
             //console.log(self.x, self.y)
 
             // Modificar coordenadas (x,y), sumar y restar 1 en caso que layerX/Y sea 0
-            self.x = (( e && e.layerX + 1) || window.event.offsetX + 1) -1;
-            self.y = (( e && e.layerY + 1) || window.event.offsetY + 1) -1;
+            self.x = ((( e && e.layerX + 1) || window.event.offsetX + 1) - 1) / self.__zoom;
+            self.y = ((( e && e.layerY + 1) || window.event.offsetY + 1) - 1) / self.__zoom;
 
             // Mientras se este arrastrando un objeto no hay necesidad de comprobar nada
             if ( !self._clicked ) {
@@ -309,11 +321,13 @@ var window = this,
                 109: "-", 112:"f1", 113:"f2", 114:"f3", 115:"f4", 116:"f5", 117:"f6", 118:"f7",
                 119:"f8", 120:"f9", 121:"f10", 122:"f11", 123:"f12", 191: "/", 96: "0", 97:"1",
                 98: "2", 99: "3", 100: "4", 101: "5", 102: "6", 103: "7", 104: "8", 105: "9", 106: "*",
-                107: "+", 110: ".", 111 : "/"},
+                107: "+", 110: ".", 111 : "/"
+                // Error en chrome linux (en mi pc)
+                , 187: "+", 189: "-"},
 
             shiftNums: { "`":"~", "1":"!", "2":"@", "3":"#", "4":"$", "5":"%", "6":"^", "7":"&",
                 "8":"*", "9":"(", "0":")", "-":"_", "=":"+", ";":":", "'":"\"", ",":"<",
-                ".":">", "/":"?", "\\":"|" }
+                ".":">", "/":"?", "\\":"|" },
         },
         
         code;
@@ -324,28 +338,36 @@ var window = this,
             var eventObj = data(self.cv, type, {}),
                 Handlers = data( eventObj );
             return function(e) {
-
-                if ( currentCanvas !== self.cv ) {
+                
+                // TODO: es esto conveniente?
+                // solo ejecutar si el canvas esta seleccionado
+                if ( currentCanvas !== self.cv && !self.__globalkeyevents ) {
                     return;
                 }
-                
+
                 // Dadas las diferencias del keyCode según el navegador
-                // usamos el mismo (el primero que se genera) en los demás eventos (keypress/keyup)
+                // usamos el primero que se genera en los demás eventos (keypress/keyup)
                 code = type == "keydown" ? e.keyCode : code;
+
                 var special = hotkeys.specialKeys[code],
                     // prevent f5 overlapping with "t" (or f4 with "s", etc.)
                     character = special || String.fromCharCode(code || e.charCode).toLowerCase(),
-                    alt = e.altKey ? "alt+" : "",
-                    ctrl = e.ctrlKey || e.metaKey ? "ctrl+" : "",
-                    shift = e.shiftKey ? "shift+" : "",
+                    modif = "",
+                    handlers;
+                    
+                    if (e.altKey) { modif += "alt+"; }
 
-                    modif = alt+ctrl+shift,
-
+                    if (e.ctrlKey || e.metaKey) { modif += "ctrl+"; }
+                    
+                    if (e.shiftKey) { modif += "shift+"; }
+                    
+                    //console.log(type, character, code, e.charCode)
                     handlers = (Handlers[modif+character] ||
-                               Handlers[modif+hotkeys.shiftNums[character]] ||
-                               // "$" can be triggered as "Shift+4" or "Shift+$" or just "$"
-                               (modif === "shift+" && Handlers[hotkeys.shiftNums[character]]) ||
-                               Handlers.any);
+                                Handlers[modif+hotkeys.shiftNums[character]] ||
+                                // "$" can be triggered as "Shift+4" or "Shift+$" or just "$"
+                                (modif === "shift+" && Handlers[hotkeys.shiftNums[character]]) ||
+                                Handlers.any
+                               );
 
                 if ( handlers ) {
                     var ret = handleEvent(self, handlers, self, e);
@@ -377,6 +399,7 @@ Cevent.fn = Cevent.prototype = {
 
         this.width  = cv.width;
         this.height = cv.height;
+        this.__zoom = 1;
 
         this.x = 0;
         this.y = 0;
@@ -488,7 +511,7 @@ Cevent.fn = Cevent.prototype = {
         var ret = this.getAll(selector);
         return Cevent( this.cv, ret.length == 1 ? ret[0] : ret);
     },
-
+    
     // Modificar atributos de un Objeto
     attr: function( attrs, value ) {
         var shapes = this._last;
@@ -525,23 +548,47 @@ Cevent.fn = Cevent.prototype = {
     skewY: function( val ) {
         return this.attr({skewY: val});
     },
+    
+    zoomTo: function(value) {
+        if (is(value, 'number')) {
+            this.__zoom = value;
+        }
+        return this;
+    },
+    
+    zoomIn: function() {
+        return this.zoomTo(this.__zoom+.1);
+    },
+    
+    zoomOut: function() {
+        return this.zoomTo(this.__zoom-.1);
+    },
+    
+    // true: los eventos del teclado se ejecutan siempre
+    // false: los eventos solo se ejecutan si el canvas tiene el foco
+    setGlobalKeyEvents: function(v) {
+        this.__globalkeyevents = v;
+        return this;
+    },
 
     // Asociar un evento con un objeto
-    // Uso:
-    //        Cv.bind( "click", function )
-    //     Cv.bind({ click: function, keydown: function ...})
     // obj es para uso interno
     bind: function( name, fn, obj ){
         var shapes = obj || this._last, type;
-
-        if ( typeof name === "object" ) {
+        
+        // ce.bind(selector,{event1: function, event2: function})
+        if (is(name, string) && is(fn, object)) {
+            for ( type in fn ) {
+                this[ type ]( name, fn[type] );
+            }
+        // ce.bind({event1: function, event2: function})
+        } else if (is(name, object)) {
             for ( type in name ) {
                 this[ type ]( name[type] );
             }
-
+        // ce.bind(event, function)
         } else if ( shapes && !shapes.length ) {
             addEvent( shapes, name, fn );
-
         } else {
             each(shapes, function( shape ) {
                 addEvent( shape, name, fn );
@@ -555,12 +602,14 @@ Cevent.fn = Cevent.prototype = {
         if ( is(fn, func) ) {
             this.__beforeDraw = fn;
         }
+        return this;
     },
     
     afterDraw: function(fn) {
         if ( is(fn, func) ) {
             this.__afterDraw = fn;
         }
+        return this;
     },
 
     // Borrar un área del lienzo o todo
@@ -577,7 +626,11 @@ Cevent.fn = Cevent.prototype = {
     // Dibujar Objetos almacenados
     draw: function() {
         var shape, i = 0, shapes = this._shapes;
-
+        
+        this.ctx.save();
+        // Aplicar zoom
+        Cevent.__zoom = this.__zoom;
+        
         this.__beforeDraw && this.__beforeDraw.call(this);
 
         for ( ; (shape = shapes[i++]); ) {
@@ -586,8 +639,9 @@ Cevent.fn = Cevent.prototype = {
 
         this.__afterDraw && this.__afterDraw.call(this);
 
+        Cevent.__zoom = 1;
+        this.ctx.restore();
         // Todos los cambios aplicados
-        needRedraw = false;
         return this;
     },
 
@@ -599,14 +653,10 @@ Cevent.fn = Cevent.prototype = {
     },
 
     /* TODO: una buena implementación de animaciones */
-    loop: function( fn, fps ) {
-        var self = this, tdata = data(this.cv);
+    loop: function( fn ) {
+         var self = this, tdata = data(this.cv);
 
-        // cambiar fps
-        if ( typeof fn == "number" ) {
-            fps = fn;
-        // cambiar función
-        } else if ( is(fn, func) ) {
+        if ( is(fn, func) ) {
             tdata.loop = fn;
         }
 
@@ -616,14 +666,19 @@ Cevent.fn = Cevent.prototype = {
             this.stop();
         }
 
-        this.play = window.setInterval(function() {
+        this.play = true;
+
+        (function() {
+            if (!self.play) { return; }
+
+            requestAnimFrame(arguments.callee);
+
             self.redraw();
 
-            if ( fn ) {    fn( self );    }
+            if ( fn ) {    fn.call(self, self);    }
 
             self.frameCount += 1;
-
-        }, 1000 / (fps||30));
+        }());
 
         return this;
     },
@@ -632,7 +687,7 @@ Cevent.fn = Cevent.prototype = {
 
     // detener Loop
     stop: function() {
-        window.clearInterval( this.play );
+        window.clearTimeout( this.play );
         delete this.play;
 
         return this;
@@ -671,7 +726,7 @@ each("mousemove mouseover mouseout mousedown mouseup click dblclick focus blur".
 });
 
 // Eventos del teclado
-// combi (opcional) es un string que especifica una combinación de teclado en el orden alt+ctrl+shift+key
+// combi (opcional) especifica combinación de teclado en el orden alfabetico
 each("keydown keypress keyup".split(" "), function( name ) {
     Cevent.fn[name] = function( combi, fn ) {
 
@@ -698,10 +753,12 @@ if ( changeKeypress ) {
     Cevent.fn.keypress = Cevent.fn.keydown;
 }
 
+// TODO: permitir evento live
 // Evento drag
 // handlers (opcional) es un objeto con las funciones start/move/end
 Cevent.fn.drag = function( handlers ) {
-    var start, move, end, self, objs = [], dragid = "Cevent-drag"+hash, shapes = this._last;
+    var start, move, end, self, objs = [],
+        dragid = "Cevent-drag"+hash, shapes = this._last;
 
     if ( shapes && !shapes.length ) {
         shapes = [ shapes ];
@@ -716,7 +773,6 @@ Cevent.fn.drag = function( handlers ) {
 
     self = Cevent( this.cv, objs );
 
-
     // los manejadores de eventos son guardados por closure
     // ¿está esto mal?
     if ( handlers ) {
@@ -726,28 +782,28 @@ Cevent.fn.drag = function( handlers ) {
     }
 
     self.bind({
-        mousedown: function( Cv, e ) {
-            if ( Cv.LEFT ) { curDrag = this; }
+        mousedown: function( c, e ) {
+            if ( c.LEFT ) { curDrag = this; }
         },
 
-        mousemove: function( Cv, e ) {
+        mousemove: function( c, e ) {
             if ( this === curDrag ) {
-                this.rmove( Cv.x - Cv.lastX, Cv.y - Cv.lastY );
+                this.rmove( c.x - c.lastX, c.y - c.lastY );
 
                 if ( !inDrag ) {
                     inDrag = true;
-                    if ( start ) {    start.call( this, Cv, e );    }
+                    if ( start ) {    start.call( this, c, e );    }
                 }
 
-                if ( move ) { move.call( this, Cv, e ); }
+                if ( move ) { move.call( this, c, e ); }
             }
         },
 
-        mouseup: function( Cv, e ) {
+        mouseup: function( c, e ) {
             if ( this === curDrag ) {
                 curDrag = inDrag = null;
 
-                if ( end ) { end.call( this, Cv, e ); }
+                if ( end ) { end.call( this, c, e ); }
             }
         }
     });
