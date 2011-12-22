@@ -306,10 +306,6 @@ var math = Math,
             if (this.stroke) {
                 ctx.strokeText(this.text, this.x, this.y + this.h);
             }
-            ctx.beginPath();
-            ctx.rect(this.x, this.y, this.w, this.h);
-            ctx.stroke();
-            ctx.closePath();
         }
         
     }),
