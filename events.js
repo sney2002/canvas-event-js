@@ -425,6 +425,12 @@ Cevent.fn = Cevent.prototype = {
                 doc[addEventListener]("keypress", keyevent("keypress", this), false);
             }
 
+            // Prevenir cambio de cursor al arrastrar (webkit)
+            if ("onselectstart" in cv) {
+                cv.onselectstart = function() { return false; }
+                cv.onmousedown = function() { return false; }
+            }
+
         } else {
             this._shapes = data(cv, "shapes");
             this._last = shapes;
@@ -654,7 +660,11 @@ Cevent.fn = Cevent.prototype = {
 
     /* TODO: una buena implementación de animaciones */
     loop: function( fn ) {
-         var self = this, tdata = data(this.cv);
+         var self = this, tdata = data(this.cv), play_flag;
+        
+        if (!is(fn, func) && !is(tdata.loop, func)) {
+            throw new Error("Function required");
+        }
 
         if ( is(fn, func) ) {
             tdata.loop = fn;
@@ -662,20 +672,16 @@ Cevent.fn = Cevent.prototype = {
 
         fn = tdata.loop;
 
-        if ( this.play ) {
-            this.stop();
-        }
-
-        this.play = true;
+        play_flag = this.play = ++uuid;
 
         (function() {
-            if (!self.play) { return; }
+            if (play_flag !== self.play) { return; }
 
             requestAnimFrame(arguments.callee);
 
             self.redraw();
 
-            if ( fn ) {    fn.call(self, self);    }
+            if ( fn ) {    self.ctx.save(); fn.call(self, self); self.ctx.restore();   }
 
             self.frameCount += 1;
         }());
@@ -687,9 +693,7 @@ Cevent.fn = Cevent.prototype = {
 
     // detener Loop
     stop: function() {
-        window.clearTimeout( this.play );
         delete this.play;
-
         return this;
     }
 };
@@ -812,7 +816,8 @@ Cevent.fn.drag = function( handlers ) {
 };
 
 /* Registrar Una Clase */
-Cevent.registre = function( name, Class ) {
+// para no dañar código previo se mantiene registre y register
+Cevent.registre = Cevent.register = function( name, Class ) {
         name = name.toLowerCase();
     var constName = name.charAt(0).toUpperCase() + name.substring(1);
 
