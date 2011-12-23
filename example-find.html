@@ -1,0 +1,196 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Ejemplo selectores y find &mdash; canvas-event-js v1 documentation</title>
+    <link rel="stylesheet" href="static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="static/jquery.js"></script>
+    <script type="text/javascript" src="static/underscore.js"></script>
+    <script type="text/javascript" src="static/doctools.js"></script>
+    <link rel="top" title="canvas-event-js v1 documentation" href="index.html" />
+    <link rel="next" title="Eliminar objeto seleccionado" href="example-remove.html" />
+    <link rel="prev" title="Atributos" href="example-attr.html" />
+   
+  
+  <link media="only screen and (max-device-width: 480px)" href="static/small_flask.css" type= "text/css" rel="stylesheet" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="example-remove.html" title="Eliminar objeto seleccionado"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="example-attr.html" title="Atributos"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">canvas-event-js v1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="ejemplo-selectores-y-find">
+<h1>Ejemplo selectores y find<a class="headerlink" href="#ejemplo-selectores-y-find" title="Permalink to this headline">¶</a></h1>
+<p>Mediante el método <a class="reference internal" href="methods.html#Cevent.find" title="Cevent.find"><tt class="xref js js-func docutils literal"><span class="pre">find</span></tt></a> es posible aplicar una método a todo un grupo de objetos.
+A continuación vemos como diferenciar dos grupos de rectángulos por su id, aplicando
+diferentes eventos a cada uno de ellos.</p>
+<p><strong>Nota</strong>: a la hora de aplicar eventos a un grupo de objetos es mejor usar <a class="reference internal" href="mouse-events.html#live-events"><em>eventos live</em></a></p>
+<canvas id="canvas" width="650" height="200" style="position: relative;"></canvas>
+<script src="static/Class.js" type="text/javascript"></script>
+<script src="static/events.js" type="text/javascript"></script>
+<script src="static/Shape.js" type="text/javascript"></script>
+<script type="text/javascript" language="javascript" charset="utf-8">
+// <![CDATA[
+    (function() {
+        var ce = Cevent("canvas"),
+            puntos = 0,
+            score_view;
+
+        function randomId() {
+            return Math.random() > .5 ? "good" : "bad";
+       }
+
+        for (var i = 0; i < 4; i++) {
+            for (var j = 0; j < 4; j++) {
+                ce.rect(i*20+100, j*20+40, 20).addId(randomId());
+            }
+        }
+
+        // seleccionar rectángulos, tanto #good como #bad
+        ce.find("rect").attr({
+            fill: "green",
+            stroke: "#000"
+        });
+
+        // rectángulos #bad
+        ce.find("#bad").click(function(c, e) {
+            if (this.fill != "red") {
+                puntos -= 1;
+                this.fill = "red";
+            }
+            score_view.setText(puntos + " puntos");
+        });
+
+        // rectángulos #good
+        ce.find("#good").click(function(c, e) {
+            if (this.fill != "gray") {
+                puntos += 1;
+                this.fill = "grey";
+            }
+            score_view.setText(puntos + " puntos");
+        });
+
+
+        var goods = ce.getAll("#good").length;
+        ce.text(20, 10, "Encuentra los " + goods + " cuadros grises").attr("fontSize", 20);
+
+        score_view = ce.text(10, 50, "0 puntos").attr("fontSize", 15).get(-1);
+
+        ce.draw();
+    }())
+// ]]>
+</script><div class="highlight-javascript"><div class="highlight"><pre><span class="kd">function</span> <span class="nx">randomId</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">&gt;</span> <span class="p">.</span><span class="mi">5</span> <span class="o">?</span> <span class="s2">&quot;good&quot;</span> <span class="o">:</span> <span class="s2">&quot;bad&quot;</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">j</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// Aplicar id aleatorio</span>
+        <span class="nx">ce</span><span class="p">.</span><span class="nx">rect</span><span class="p">(</span><span class="nx">i</span><span class="o">*</span><span class="mi">20</span><span class="o">+</span><span class="mi">100</span><span class="p">,</span> <span class="nx">j</span><span class="o">*</span><span class="mi">20</span><span class="o">+</span><span class="mi">40</span><span class="p">,</span> <span class="mi">20</span><span class="p">).</span><span class="nx">addId</span><span class="p">(</span><span class="nx">randomId</span><span class="p">());</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// rectángulos tanto #good como #bad</span>
+<span class="nx">ce</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s2">&quot;rect&quot;</span><span class="p">).</span><span class="nx">attr</span><span class="p">({</span>
+    <span class="nx">fill</span><span class="o">:</span> <span class="s2">&quot;green&quot;</span><span class="p">,</span>
+    <span class="nx">stroke</span><span class="o">:</span> <span class="s2">&quot;#000&quot;</span>
+<span class="p">});</span>
+
+<span class="c1">// rectángulos #bad</span>
+<span class="nx">ce</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s2">&quot;#bad&quot;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">fill</span> <span class="o">!=</span> <span class="s2">&quot;red&quot;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">puntos</span> <span class="o">-=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">fill</span> <span class="o">=</span> <span class="s2">&quot;red&quot;</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="nx">score_view</span><span class="p">.</span><span class="nx">setText</span><span class="p">(</span><span class="nx">puntos</span> <span class="o">+</span> <span class="s2">&quot; puntos&quot;</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="c1">// rectángulos #good</span>
+<span class="nx">ce</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s2">&quot;#good&quot;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">fill</span> <span class="o">!=</span> <span class="s2">&quot;gray&quot;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">puntos</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">fill</span> <span class="o">=</span> <span class="s2">&quot;grey&quot;</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="nx">score_view</span><span class="p">.</span><span class="nx">setText</span><span class="p">(</span><span class="nx">puntos</span> <span class="o">+</span> <span class="s2">&quot; puntos&quot;</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper"><h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="example-attr.html" title="previous chapter">Atributos</a></li>
+      <li>Next: <a href="example-remove.html" title="next chapter">Eliminar objeto seleccionado</a></li>
+  </ul></li>
+</ul>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="sources/example-find.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+
+    <a href="http://github.com/sney2002/canvas-event-js"><img style="z-index: 1000; position: fixed; top: 0; right: 0; border: 0;"
+    src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
+  
+
+    <div class="footer">
+      &copy; Copyright 2011, Jhonatan Salguero Villa.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+    </div>
+  </body>
+</html>

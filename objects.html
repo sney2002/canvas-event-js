@@ -75,6 +75,30 @@
 </pre></div>
 </div>
 <dl class="class">
+<dt id="Cevent.text">
+<em class="property">class </em><tt class="descclassname">Cevent.</tt><tt class="descname">text</tt><big>(</big><em>x</em>, <em>y</em>, <em>text</em><big>)</big><a class="headerlink" href="#Cevent.text" title="Permalink to this definition">¶</a></dt>
+<dd><p>inserta el texto en la posición (x, y). Para dar estilo al texto se usan los
+siguiente <a class="reference internal" href="methods.html#Cevent.attr" title="Cevent.attr"><tt class="xref js js-func docutils literal"><span class="pre">atributos</span></tt></a>:</p>
+<ul class="simple">
+<li>fontStyle: Normal | <em>Italic</em>.</li>
+<li>fontWeight: Normal | <strong>Bold</strong>.</li>
+<li>fontSize: Numero entero</li>
+<li>fontFamily: Tipo de letra valido (eje. Arial)</li>
+</ul>
+<p>Para cambiar el texto tenemos dos opciones:</p>
+</dd></dl>
+
+<div class="highlight-javascript"><pre> var saludo = ce.text(20, 20, "hola").get(-1);
+
+ // Usar el metodo setText del objeto text
+ saludo.setText("Mundo");
+
+ // modificar el atributo text
+ saludo.text = "Hola mundo!";
+
+Pueden encontrar un ejemplo :doc:`aquí &lt;example-text&gt;`.</pre>
+</div>
+<dl class="class">
 <dt id="Cevent.circle">
 <em class="property">class </em><tt class="descclassname">Cevent.</tt><tt class="descname">circle</tt><big>(</big><em>x</em>, <em>y</em>, <em>radius</em><big>)</big><a class="headerlink" href="#Cevent.circle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Crea un circulo de radio <strong>radius</strong> en la posición <strong>x</strong>, <strong>y</strong>.</p>
@@ -164,7 +188,7 @@ Para una descripción mas completa vea <a class="reference internal" href="svg.h
       <div class="clearer"></div>
     </div>
 
-    <a href="http://github.com/sney2002/canvas-event-js"><img style="position: fixed; top: 0; right: 0; border: 0;"
+    <a href="http://github.com/sney2002/canvas-event-js"><img style="z-index: 1000; position: fixed; top: 0; right: 0; border: 0;"
     src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
   
 

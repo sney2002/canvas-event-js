@@ -47,7 +47,7 @@
         <div class="bodywrapper">
           <div class="body">
             
-   <canvas id="canvas" width="650"></canvas>
+   <canvas id="canvas" width="650" style="border: none; z-index: 1"></canvas>
  <script src="static/Class.js" type="text/javascript"></script>
  <script src="static/events.js" type="text/javascript"></script>
  <script src="static/Shape.js" type="text/javascript"></script>
@@ -55,8 +55,15 @@
 // <![CDATA[
     (function() {
          var ce = Cevent("canvas"),
-             width = ce.width,
-             height = ce.height;
+             width = document.documentElement.clientWidth,
+             height = 80;
+
+         ce.cv.width = width;
+         ce.cv.height = height;
+
+         ce.cv.style.position = "absolute";
+         ce.cv.style.top = 0;
+         ce.cv.style.left = 0;
 
          function randint(i) {
              return parseInt(Math.random()*i);
@@ -66,11 +73,11 @@
              return "rgb(" + [randint(255), randint(255), randint(255)] + ")";
          }
 
-         for (var i = 0; i < 50; i++) {
+         for (var i = 0; i < 30; i++) {
              ce.circle(randint(width), randint(height), randint(25)+5)
              .attr({
                  fill: randcolor(),
-                 alpha: Math.random(),
+                 alpha: .5,
                  velx: Math.random(),
                  vely: Math.random(),
              });
@@ -98,6 +105,7 @@
 // ]]>
 </script><div class="section" id="bienvenido-a-canvas-event">
 <h1>Bienvenido a canvas-event<a class="headerlink" href="#bienvenido-a-canvas-event" title="Permalink to this headline">¶</a></h1>
+<p>La forma mas facil de interactuar con el elemento <strong>canvas</strong>.</p>
 <p>Contenido:</p>
 <div class="toctree-wrapper compound">
 <ul>
@@ -107,19 +115,33 @@
 <li class="toctree-l1"><a class="reference internal" href="svg.html">Rutas SVG</a></li>
 <li class="toctree-l1"><a class="reference internal" href="extend.html">Extendiendo canvas-event</a></li>
 <li class="toctree-l1"><a class="reference internal" href="events.html">Eventos</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mouse-events.html">Eventos del ratón</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mouse-events.html#eventos-live">Eventos live</a></li>
-<li class="toctree-l1"><a class="reference internal" href="keyboard-events.html">Eventos del teclado</a></li>
-<li class="toctree-l1"><a class="reference internal" href="keyboard-events.html#propiedad-focused">Propiedad focused</a></li>
-<li class="toctree-l1"><a class="reference internal" href="find.html">Selectores y los métodos find y getAll</a></li>
-<li class="toctree-l1"><a class="reference internal" href="methods.html">Métodos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mouse-events.html">Eventos del ratón</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mouse-events.html#eventos-live">Eventos live</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="keyboard-events.html">Eventos del teclado</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="keyboard-events.html#propiedad-focused">Propiedad focused</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="drag-n-drop.html">Drag and Drop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="find.html">Selectores y métodos find y getAll</a></li>
+<li class="toctree-l1"><a class="reference internal" href="methods.html">Métodos</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="methods.html#seleccion">Selección</a></li>
+<li class="toctree-l2"><a class="reference internal" href="methods.html#manejo-de-atributos">Manejo de atributos</a></li>
+</ul>
+</li>
 </ul>
 </div>
 <p>Ejemplos:</p>
 <div class="toctree-wrapper compound">
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="example-attr.html">Atributos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example-find.html">Ejemplo selectores y find</a></li>
 <li class="toctree-l1"><a class="reference internal" href="example-remove.html">Eliminar objeto seleccionado</a></li>
 <li class="toctree-l1"><a class="reference internal" href="example-loop.html">Ejemplo animación loop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example-zoom.html">Ejemplo zoom</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example-rotation.html">Rotación</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example-text.html">Usando texto</a></li>
 </ul>
 </div>
 </div>
@@ -173,7 +195,7 @@
       <div class="clearer"></div>
     </div>
 
-    <a href="http://github.com/sney2002/canvas-event-js"><img style="position: fixed; top: 0; right: 0; border: 0;"
+    <a href="http://github.com/sney2002/canvas-event-js"><img style="z-index: 1000; position: fixed; top: 0; right: 0; border: 0;"
     src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
   
 

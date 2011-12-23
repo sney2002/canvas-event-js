@@ -22,7 +22,8 @@
     <script type="text/javascript" src="static/underscore.js"></script>
     <script type="text/javascript" src="static/doctools.js"></script>
     <link rel="top" title="canvas-event-js v1 documentation" href="index.html" />
-    <link rel="prev" title="Selectores y los métodos find y getAll" href="find.html" />
+    <link rel="next" title="Atributos" href="example-attr.html" />
+    <link rel="prev" title="Selectores y métodos find y getAll" href="find.html" />
    
   
   <link media="only screen and (max-device-width: 480px)" href="static/small_flask.css" type= "text/css" rel="stylesheet" />
@@ -36,7 +37,10 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="find.html" title="Selectores y los métodos find y getAll"
+          <a href="example-attr.html" title="Atributos"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="find.html" title="Selectores y métodos find y getAll"
              accesskey="P">previous</a> |</li>
         <li><a href="index.html">canvas-event-js v1 documentation</a> &raquo;</li> 
       </ul>
@@ -49,6 +53,8 @@
             
   <div class="section" id="metodos">
 <h1>Métodos<a class="headerlink" href="#metodos" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="seleccion">
+<h2>Selección<a class="headerlink" href="#seleccion" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="Cevent.get">
 <tt class="descclassname">Cevent.</tt><tt class="descname">get</tt><big>(</big><em>i</em><big>)</big><a class="headerlink" href="#Cevent.get" title="Permalink to this definition">¶</a></dt>
@@ -80,7 +86,7 @@ coinciden con el <a class="reference internal" href="find.html"><em>selector</em
 <dl class="function">
 <dt id="Cevent.getAll">
 <tt class="descclassname">Cevent.</tt><tt class="descname">getAll</tt><big>(</big><em>selector</em><big>)</big><a class="headerlink" href="#Cevent.getAll" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retorna los objetos que coinciden con el <a class="reference internal" href="find.html"><em>selector</em></a>.</p>
+<dd><p>Retorna un array con los objetos que coinciden con el <a class="reference internal" href="find.html"><em>selector</em></a>.</p>
 </dd></dl>
 
 <dl class="function">
@@ -97,13 +103,67 @@ coinciden con el <a class="reference internal" href="find.html"><em>selector</em
 <span class="p">});</span>
 </pre></div>
 </div>
+<div class="section" id="dibujo">
+<h3>Dibujo<a class="headerlink" href="#dibujo" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="Cevent.clear">
+<tt class="descclassname">Cevent.</tt><tt class="descname">clear</tt><big>(</big><em>x</em>, <em>y</em>, <em>width</em>, <em>height</em><big>)</big><a class="headerlink" href="#Cevent.clear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Borra el área especificada del lienzo, si se llama sin argumentos borra el lienzo completo.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Cevent.draw">
+<tt class="descclassname">Cevent.</tt><tt class="descname">draw</tt><big>(</big><big>)</big><a class="headerlink" href="#Cevent.draw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dibuja todos los objetos almacenados sin borrar previamente el lienzo.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Cevent.redraw">
+<tt class="descclassname">Cevent.</tt><tt class="descname">redraw</tt><big>(</big><big>)</big><a class="headerlink" href="#Cevent.redraw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Borra el lienzo y luego dibuja todo los objetos almacenados, es equivalente a <cite>ce.clear().draw()</cite>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Cevent.loop">
+<tt class="descclassname">Cevent.</tt><tt class="descname">loop</tt><big>(</big><em>function</em><big>)</big><a class="headerlink" href="#Cevent.loop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Llama la función especificada y luego redibuja el lienzo (aproximadamente 60 veces por segundo).</p>
+<p>La función recibe como único argumento la instancia de canvas-event que se esta animando.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Cevent.stop">
+<tt class="descclassname">Cevent.</tt><tt class="descname">stop</tt><big>(</big><big>)</big><a class="headerlink" href="#Cevent.stop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detiene el loop de animación.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Cevent.zoomIn">
+<tt class="descclassname">Cevent.</tt><tt class="descname">zoomIn</tt><big>(</big><big>)</big><a class="headerlink" href="#Cevent.zoomIn" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Cevent.zoomOut">
+<tt class="descclassname">Cevent.</tt><tt class="descname">zoomOut</tt><big>(</big><big>)</big><a class="headerlink" href="#Cevent.zoomOut" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Cevent.zoomTo">
+<tt class="descclassname">Cevent.</tt><tt class="descname">zoomTo</tt><big>(</big><em>scale</em><big>)</big><a class="headerlink" href="#Cevent.zoomTo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Permiten alejar y acercar los objetos dibujados mientras los eventos del ratón siguen
+comportándose como se esperaría.</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="manejo-de-atributos">
+<h2>Manejo de atributos<a class="headerlink" href="#manejo-de-atributos" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="Cevent.attr">
 <tt class="descclassname">Cevent.</tt><tt class="descname">attr</tt><big>(</big><em>attr</em>, <em>value</em><big>)</big><a class="headerlink" href="#Cevent.attr" title="Permalink to this definition">¶</a></dt>
 <dt>
 <tt class="descclassname">Cevent.</tt><tt class="descname">attr</tt><big>(</big><em>{attr: value</em>, <em>attr: value}</em><big>)</big></dt>
-<dd><p>Cambia o establece un atributo del ultimo objeto dibujado u objetos retornados por find.</p>
-<p>los atributos que comparten todo los objetos y sus valor por defecto son:</p>
+<dd><p>Cambia o establece un atributo del ultimo objeto dibujado u objetos retornados por <a class="reference internal" href="#Cevent.find" title="Cevent.find"><tt class="xref js js-func docutils literal"><span class="pre">find</span></tt></a>.</p>
+<p>Los atributos que comparten todo los objetos y sus valor por defecto son:</p>
 <ul class="simple">
 <li><strong>fill</strong>: #000</li>
 <li><strong>stroke</strong>: &#8220;&#8221;</li>
@@ -114,13 +174,18 @@ coinciden con el <a class="reference internal" href="find.html"><em>selector</em
 <li><strong>lineJoin</strong>: miter</li>
 <li><strong>lineCap</strong>: butt</li>
 <li><strong>alpha</strong>: 1 (transparencia)</li>
-<li><strong>rotation</strong>: 0 (rotación en grados sexadesimales)</li>
+<li><strong>rotation</strong>: 0 (rotación en <a class="reference external" href="http://es.wikipedia.org/wiki/Sistema_sexagesimal">grados sexadesimales</a>)</li>
 <li><strong>composite</strong>: source-over</li>
 <li><strong>shadowColor</strong>: rgba(0, 0, 0, 0.0)</li>
 <li><strong>shadowOffsetX/shadowOffsetY</strong>: 0</li>
 <li><strong>shadowBlur</strong>: 0</li>
+<li><strong>fontStyle</strong>: normal</li>
+<li><strong>fontWeight</strong>: normal</li>
+<li><strong>fontSize</strong>: 10</li>
+<li><strong>fontFamily</strong>: Arial</li>
 </ul>
-<p>Aparte de estos podemos definir atributos propios:</p>
+<p>Se pueden especificar otros atributos siempre cuando no entren con conflicto
+con los anteriores.</p>
 </dd></dl>
 
 <div class="highlight-javascript"><div class="highlight"><pre><span class="nx">ce</span><span class="p">.</span><span class="nx">circle</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">20</span><span class="p">).</span><span class="nx">attr</span><span class="p">({</span>
@@ -132,12 +197,33 @@ coinciden con el <a class="reference internal" href="find.html"><em>selector</em
 <span class="p">}).</span><span class="nx">draw</span><span class="p">();</span>
 </pre></div>
 </div>
+<p>Los siguientes métodos tiene el mismo efecto que llamar a <strong>attr</strong> con los valore adecuados:</p>
 <dl class="function">
-<dt id="Cevent.loop">
-<tt class="descclassname">Cevent.</tt><tt class="descname">loop</tt><big>(</big><em>function</em><big>)</big><a class="headerlink" href="#Cevent.loop" title="Permalink to this definition">¶</a></dt>
-<dd><p>llama la funcion especificada aproximadamente 60 veces por segundo y luego redibuja el lienzo.</p>
-</dd></dl>
+<dt id="Cevent.skewX">
+<tt class="descclassname">Cevent.</tt><tt class="descname">skewX</tt><big>(</big><em>amount</em><big>)</big><a class="headerlink" href="#Cevent.skewX" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
+<dl class="function">
+<dt id="Cevent.skewY">
+<tt class="descclassname">Cevent.</tt><tt class="descname">skewY</tt><big>(</big><em>amount</em><big>)</big><a class="headerlink" href="#Cevent.skewY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Cevent.translate">
+<tt class="descclassname">Cevent.</tt><tt class="descname">translate</tt><big>(</big><em>x</em>, <em>y</em><big>)</big><a class="headerlink" href="#Cevent.translate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Cevent.scale">
+<tt class="descclassname">Cevent.</tt><tt class="descname">scale</tt><big>(</big><em>x</em>, <em>y</em><big>)</big><a class="headerlink" href="#Cevent.scale" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Cevent.rotate">
+<tt class="descclassname">Cevent.</tt><tt class="descname">rotate</tt><big>(</big><em>deg</em><big>)</big><a class="headerlink" href="#Cevent.rotate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
 </div>
 
 
@@ -145,10 +231,23 @@ coinciden con el <a class="reference internal" href="find.html"><em>selector</em
         </div>
       </div>
       <div class="sphinxsidebar">
-        <div class="sphinxsidebarwrapper"><h3>Related Topics</h3>
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Métodos</a><ul>
+<li><a class="reference internal" href="#seleccion">Selección</a><ul>
+<li><a class="reference internal" href="#dibujo">Dibujo</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#manejo-de-atributos">Manejo de atributos</a></li>
+</ul>
+</li>
+</ul>
+<h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="find.html" title="previous chapter">Selectores y los métodos find y getAll</a></li>
+      <li>Previous: <a href="find.html" title="previous chapter">Selectores y métodos find y getAll</a></li>
+      <li>Next: <a href="example-attr.html" title="next chapter">Atributos</a></li>
   </ul></li>
 </ul>
   <h3>This Page</h3>
@@ -174,7 +273,7 @@ coinciden con el <a class="reference internal" href="find.html"><em>selector</em
       <div class="clearer"></div>
     </div>
 
-    <a href="http://github.com/sney2002/canvas-event-js"><img style="position: fixed; top: 0; right: 0; border: 0;"
+    <a href="http://github.com/sney2002/canvas-event-js"><img style="z-index: 1000; position: fixed; top: 0; right: 0; border: 0;"
     src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
   
 

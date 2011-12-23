@@ -426,3 +426,5 @@ a:hover tt {
 .revsys-inline {
     display: none!important;
 }
+
+canvas { border: 1px solid #000; }

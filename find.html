@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Selectores y los métodos find y getAll &mdash; canvas-event-js v1 documentation</title>
+    <title>Selectores y métodos find y getAll &mdash; canvas-event-js v1 documentation</title>
     <link rel="stylesheet" href="static/flasky.css" type="text/css" />
     <link rel="stylesheet" href="static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -22,7 +22,8 @@
     <script type="text/javascript" src="static/underscore.js"></script>
     <script type="text/javascript" src="static/doctools.js"></script>
     <link rel="top" title="canvas-event-js v1 documentation" href="index.html" />
-    <link rel="prev" title="Eventos del teclado" href="keyboard-events.html" />
+    <link rel="next" title="Métodos" href="methods.html" />
+    <link rel="prev" title="Drag and Drop" href="drag-n-drop.html" />
    
   
   <link media="only screen and (max-device-width: 480px)" href="static/small_flask.css" type= "text/css" rel="stylesheet" />
@@ -36,7 +37,10 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="keyboard-events.html" title="Eventos del teclado"
+          <a href="methods.html" title="Métodos"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="drag-n-drop.html" title="Drag and Drop"
              accesskey="P">previous</a> |</li>
         <li><a href="index.html">canvas-event-js v1 documentation</a> &raquo;</li> 
       </ul>
@@ -47,8 +51,8 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="selectores-y-los-metodos-find-y-getall">
-<h1>Selectores y los métodos find y getAll<a class="headerlink" href="#selectores-y-los-metodos-find-y-getall" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="selectores-y-metodos-find-y-getall">
+<h1>Selectores y métodos find y getAll<a class="headerlink" href="#selectores-y-metodos-find-y-getall" title="Permalink to this headline">¶</a></h1>
 <p>Usando el método find, es posible seleccionar un grupo de objetos y aplicarles
 un método o manejador de evento. para esto debemos pasar un selector:</p>
 <ul class="simple">
@@ -60,11 +64,11 @@ Todos los rectángulos tienen el mismo color, pero los rectángulos <strong>mina
 mientras los demás aumentan los puntos del jugador.</p>
 <p><strong>Nota</strong> Al igual que en css, el símbolo <strong>#</strong> indica que <strong>mina</strong> y <strong>safe</strong> son id.</p>
 <div class="highlight-javascript"><div class="highlight"><pre><span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">ce</span><span class="p">.</span><span class="nx">rect</span><span class="p">(</span><span class="nx">i</span><span class="o">*</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">).</span><span class="nx">setId</span><span class="p">(</span><span class="s2">&quot;mina&quot;</span><span class="p">);</span>
+    <span class="nx">ce</span><span class="p">.</span><span class="nx">rect</span><span class="p">(</span><span class="nx">i</span><span class="o">*</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">).</span><span class="nx">addId</span><span class="p">(</span><span class="s2">&quot;mina&quot;</span><span class="p">);</span>
 <span class="p">}</span>
 
 <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">ce</span><span class="p">.</span><span class="nx">rect</span><span class="p">(</span><span class="nx">i</span><span class="o">*</span><span class="mi">10</span><span class="p">;</span> <span class="mi">10</span><span class="p">;</span> <span class="mi">10</span><span class="p">).</span><span class="nx">setId</span><span class="p">(</span><span class="s2">&quot;safe&quot;</span><span class="p">);</span>
+    <span class="nx">ce</span><span class="p">.</span><span class="nx">rect</span><span class="p">(</span><span class="nx">i</span><span class="o">*</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">).</span><span class="nx">addId</span><span class="p">(</span><span class="s2">&quot;safe&quot;</span><span class="p">);</span>
 <span class="p">}</span>
 
 <span class="c1">// seleccionar rectángulos, tanto #mina como #safe</span>
@@ -100,7 +104,8 @@ mientras los demás aumentan los puntos del jugador.</p>
         <div class="sphinxsidebarwrapper"><h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="keyboard-events.html" title="previous chapter">Eventos del teclado</a></li>
+      <li>Previous: <a href="drag-n-drop.html" title="previous chapter">Drag and Drop</a></li>
+      <li>Next: <a href="methods.html" title="next chapter">Métodos</a></li>
   </ul></li>
 </ul>
   <h3>This Page</h3>
@@ -126,7 +131,7 @@ mientras los demás aumentan los puntos del jugador.</p>
       <div class="clearer"></div>
     </div>
 
-    <a href="http://github.com/sney2002/canvas-event-js"><img style="position: fixed; top: 0; right: 0; border: 0;"
+    <a href="http://github.com/sney2002/canvas-event-js"><img style="z-index: 1000; position: fixed; top: 0; right: 0; border: 0;"
     src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
   
 

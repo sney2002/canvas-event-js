@@ -53,7 +53,11 @@ var math = Math,
         shadowColor: "rgba(0, 0, 0, 0.0)",
         shadowOffsetX: 0,
         shadowOffsetY: 0,
-        shadowBlur: 0
+        shadowBlur: 0,
+        fontStyle: "normal",
+        fontWeight: "normal",
+        fontSize: 10,
+        fontFamily: "Arial"
     },
 
     cv = document.createElement("canvas"),
@@ -267,6 +271,44 @@ var math = Math,
                     mousePos.y >= 0 && mousePos.y <= this.h * this.scaleY );
         }
     }),
+    
+    /****************
+     * Objeto Texto *
+     ****************/
+    // extender Rect ya que el texto forma un "rectángulo"
+    Text = Rect.extend({
+        init: function(x, y, text) {
+            this.setText(text);
+            this._super(x, y, this.w, this.h);
+        },
+
+        applyStyle: function(ctx) {
+            ctx.font = this.fontStyle + " " + this.fontWeight + " " +
+                       this.fontSize + "px " + this.fontFamily;
+
+            this.h = this.fontSize;
+            this.w = ctx.measureText(this.text).width;
+            this._super(ctx);
+        },
+
+        setText: function(text) {
+            this.text = text + "";
+        },
+
+        draw: function(ctx) {
+            this.applyStyle(ctx);
+            this.setTransform(ctx);
+            
+            // Dibujar texto
+            if (this.fill) {
+                ctx.fillText(this.text, this.x, this.y + this.h);
+            }
+            if (this.stroke) {
+                ctx.strokeText(this.text, this.x, this.y + this.h);
+            }
+        }
+        
+    }),
 
     /*****************
      * Objeto Imagen *
@@ -310,14 +352,13 @@ var math = Math,
             this.applyStyle( ctx );
             this.setTransform( ctx );
 
-            ctx.drawImage( this.img, x, y );
-            
             if ( ctx === testCtx ) {
                 ctx.beginPath();
                 ctx.rect( x, y, round(this.w), round(this.h) );
                 ctx.closePath();
+            } else {
+                ctx.drawImage( this.img, x, y );
             }
-
         }
     }),
 
@@ -1285,11 +1326,12 @@ if (testCtx.getImageData(58, 31, 1, 1).data[3]) {
 })();
 
 /* Registrar Objetos */
-Cevent.registre( "image", Img );
-Cevent.registre( "circle", Circle );
-Cevent.registre( "arc", Arc );
-Cevent.registre( "ellipse", Ellipse );
-Cevent.registre( "rect", Rect );
-Cevent.registre( "line", Line );
-Cevent.registre( "path", Path );
+Cevent.register( "image", Img );
+Cevent.register( "circle", Circle );
+Cevent.register( "arc", Arc );
+Cevent.register( "ellipse", Ellipse );
+Cevent.register( "rect", Rect );
+Cevent.register( "text", Text );
+Cevent.register( "line", Line );
+Cevent.register( "path", Path );
 })(Cevent, this);

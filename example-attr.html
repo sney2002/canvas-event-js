@@ -1,0 +1,137 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Atributos &mdash; canvas-event-js v1 documentation</title>
+    <link rel="stylesheet" href="static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="static/jquery.js"></script>
+    <script type="text/javascript" src="static/underscore.js"></script>
+    <script type="text/javascript" src="static/doctools.js"></script>
+    <link rel="top" title="canvas-event-js v1 documentation" href="index.html" />
+    <link rel="next" title="Eliminar objeto seleccionado" href="example-remove.html" />
+    <link rel="prev" title="Métodos" href="methods.html" />
+   
+  
+  <link media="only screen and (max-device-width: 480px)" href="static/small_flask.css" type= "text/css" rel="stylesheet" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="example-remove.html" title="Eliminar objeto seleccionado"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="methods.html" title="Métodos"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">canvas-event-js v1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="atributos">
+<h1>Atributos<a class="headerlink" href="#atributos" title="Permalink to this headline">¶</a></h1>
+<p>El método <a class="reference internal" href="methods.html#Cevent.attr" title="Cevent.attr"><tt class="xref js js-func docutils literal"><span class="pre">attr</span></tt></a> modifica o <a class="reference internal" href="example-loop.html"><em>adiciona atributos</em></a>,
+su funcionamiento es similar al del método css de <a class="reference external" href="http://www.jquery.com">jQuery</a>:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="c1">// Usando un objeto</span>
+<span class="nx">ce</span><span class="p">.</span><span class="nx">circle</span><span class="p">(</span><span class="mi">140</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">20</span><span class="p">).</span><span class="nx">attr</span><span class="p">({</span>
+    <span class="nx">fill</span><span class="o">:</span> <span class="s2">&quot;green&quot;</span><span class="p">,</span>
+    <span class="nx">stroke</span><span class="o">:</span> <span class="s2">&quot;black&quot;</span><span class="p">,</span>
+    <span class="nx">scaleX</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="nx">lineWidth</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span>
+<span class="p">});</span>
+
+<span class="c1">// Único atributo</span>
+<span class="nx">ce</span><span class="p">.</span><span class="nx">rect</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">50</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;fill&quot;</span><span class="p">,</span> <span class="s2">&quot;orangered&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<canvas id="canvas" width="650" height="200" style="position: relative; "></canvas>
+<script src="static/Class.js" type="text/javascript"></script>
+<script src="static/events.js" type="text/javascript"></script>
+<script src="static/Shape.js" type="text/javascript"></script>
+<script type="text/javascript" charset="utf-8">
+(function(){
+    var ce = Cevent("canvas");
+
+    // Usando un objeto
+    ce.circle(140, 30, 20).attr({
+        fill: "green",
+        stroke: "black",
+        alpha: .5,
+        lineWidth: 5,
+    });
+
+    // Único atributo
+    ce.rect(200, 100, 30, 50).attr("fill", "orangered");
+
+    ce.draw();
+    }())
+</script></div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper"><h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="methods.html" title="previous chapter">Métodos</a></li>
+      <li>Next: <a href="example-remove.html" title="next chapter">Eliminar objeto seleccionado</a></li>
+  </ul></li>
+</ul>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="sources/example-attr.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+
+    <a href="http://github.com/sney2002/canvas-event-js"><img style="z-index: 1000; position: fixed; top: 0; right: 0; border: 0;"
+    src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
+  
+
+    <div class="footer">
+      &copy; Copyright 2011, Jhonatan Salguero Villa.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+    </div>
+  </body>
+</html>

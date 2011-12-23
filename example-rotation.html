@@ -1,0 +1,150 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Rotación &mdash; canvas-event-js v1 documentation</title>
+    <link rel="stylesheet" href="static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="static/jquery.js"></script>
+    <script type="text/javascript" src="static/underscore.js"></script>
+    <script type="text/javascript" src="static/doctools.js"></script>
+    <link rel="top" title="canvas-event-js v1 documentation" href="index.html" />
+    <link rel="next" title="Usando texto" href="example-text.html" />
+    <link rel="prev" title="Ejemplo zoom" href="example-zoom.html" />
+   
+  
+  <link media="only screen and (max-device-width: 480px)" href="static/small_flask.css" type= "text/css" rel="stylesheet" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="example-text.html" title="Usando texto"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="example-zoom.html" title="Ejemplo zoom"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">canvas-event-js v1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="rotacion">
+<h1>Rotación<a class="headerlink" href="#rotacion" title="Permalink to this headline">¶</a></h1>
+<p>Los objetos rotan con respecto al origen del lienzo (esquina superior izquierda),
+si desea que giren con respecto a otro punto primero hay que trasladarlo.</p>
+<canvas id="canvas" width="650" height="200" style="position: relative; "></canvas>
+<script src="static/Class.js" type="text/javascript"></script>
+<script src="static/events.js" type="text/javascript"></script>
+<script src="static/Shape.js" type="text/javascript"></script>
+<script type="text/javascript" charset="utf-8">
+(function(){
+    var ce = Cevent("canvas");
+
+    var rect1 = ce.rect(100, 100, 50).attr("fill", "green").get(-1),
+        rect2 = ce.rect(0, 0, 50).attr("fill", "orangered").translate(250, 100).get(-1);
+        rect3 = ce.rect(-25, -25, 50).attr("fill", "gray").translate(400, 100).get(-1);
+        rect4 = ce.rect(-17, -17, 34).attr("fill", "red").translate(400, 100).get(-1);
+
+
+    ce.loop(function(c){
+
+        c.ctx.beginPath();
+        c.ctx.moveTo(0, 0);
+        c.ctx.rotate(rect1.rotation * (Math.PI/180));
+        c.ctx.lineTo(rect1.x, rect1.y);
+        c.ctx.stroke();
+        c.ctx.closePath();
+
+        rect1.rotation += .5;
+        rect2.rotation -= 1;
+        rect3.rotation += 1;
+        rect4.rotation -= 1;
+    });
+}())
+    </script><div class="highlight-javascript"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">ce</span> <span class="o">=</span> <span class="nx">Cevent</span><span class="p">(</span><span class="s2">&quot;canvas&quot;</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">origen</span> <span class="o">=</span> <span class="nx">ce</span><span class="p">.</span><span class="nx">rect</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">50</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;fill&quot;</span><span class="p">,</span> <span class="s2">&quot;green&quot;</span><span class="p">).</span><span class="nx">get</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span>
+
+    <span class="nx">corner</span> <span class="o">=</span> <span class="nx">ce</span><span class="p">.</span><span class="nx">rect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;fill&quot;</span><span class="p">,</span> <span class="s2">&quot;orangered&quot;</span><span class="p">)</span>
+                              <span class="p">.</span><span class="nx">translate</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">100</span><span class="p">).</span><span class="nx">get</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+
+    <span class="nx">center</span> <span class="o">=</span> <span class="nx">ce</span><span class="p">.</span><span class="nx">rect</span><span class="p">(</span><span class="o">-</span><span class="mi">25</span><span class="p">,</span> <span class="o">-</span><span class="mi">25</span><span class="p">,</span> <span class="mi">50</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;fill&quot;</span><span class="p">,</span> <span class="s2">&quot;gray&quot;</span><span class="p">)</span>
+                                  <span class="p">.</span><span class="nx">translate</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">100</span><span class="p">).</span><span class="nx">get</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+
+<span class="nx">ce</span><span class="p">.</span><span class="nx">loop</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+    <span class="nx">origen</span><span class="p">.</span><span class="nx">rotation</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="nx">center</span><span class="p">.</span><span class="nx">rotation</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="nx">corner</span><span class="p">.</span><span class="nx">rotation</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper"><h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="example-zoom.html" title="previous chapter">Ejemplo zoom</a></li>
+      <li>Next: <a href="example-text.html" title="next chapter">Usando texto</a></li>
+  </ul></li>
+</ul>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="sources/example-rotation.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+
+    <a href="http://github.com/sney2002/canvas-event-js"><img style="z-index: 1000; position: fixed; top: 0; right: 0; border: 0;"
+    src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
+  
+
+    <div class="footer">
+      &copy; Copyright 2011, Jhonatan Salguero Villa.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+    </div>
+  </body>
+</html>

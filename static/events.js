@@ -126,7 +126,7 @@ var window = this,
         var handler, i = 0, ret = true;
         
         context.ctx.save();
-        context.ctx.scale(context.zoom, context.zoom);
+        context.ctx.scale(context.__zoom, context.__zoom);
         for ( ;(handler = handlers[i++]); ) {
             if ( handler.call(obj, context, event) === false ) {
                 ret = false;
@@ -180,8 +180,8 @@ var window = this,
             //console.log(self.x, self.y)
 
             // Modificar coordenadas (x,y), sumar y restar 1 en caso que layerX/Y sea 0
-            self.x = ((( e && e.layerX + 1) || window.event.offsetX + 1) - 1) / self.zoom;
-            self.y = ((( e && e.layerY + 1) || window.event.offsetY + 1) - 1) / self.zoom;
+            self.x = ((( e && e.layerX + 1) || window.event.offsetX + 1) - 1) / self.__zoom;
+            self.y = ((( e && e.layerY + 1) || window.event.offsetY + 1) - 1) / self.__zoom;
 
             // Mientras se este arrastrando un objeto no hay necesidad de comprobar nada
             if ( !self._clicked ) {
@@ -399,7 +399,7 @@ Cevent.fn = Cevent.prototype = {
 
         this.width  = cv.width;
         this.height = cv.height;
-        this.zoom = 1;
+        this.__zoom = 1;
 
         this.x = 0;
         this.y = 0;
@@ -423,6 +423,12 @@ Cevent.fn = Cevent.prototype = {
 
             if ( !changeKeypress ) {
                 doc[addEventListener]("keypress", keyevent("keypress", this), false);
+            }
+
+            // Prevenir cambio de cursor al arrastrar (webkit)
+            if ("onselectstart" in cv) {
+                cv.onselectstart = function() { return false; }
+                cv.onmousedown = function() { return false; }
             }
 
         } else {
@@ -549,6 +555,21 @@ Cevent.fn = Cevent.prototype = {
         return this.attr({skewY: val});
     },
     
+    zoomTo: function(value) {
+        if (is(value, 'number')) {
+            this.__zoom = value;
+        }
+        return this;
+    },
+    
+    zoomIn: function() {
+        return this.zoomTo(this.__zoom+.1);
+    },
+    
+    zoomOut: function() {
+        return this.zoomTo(this.__zoom-.1);
+    },
+    
     // true: los eventos del teclado se ejecutan siempre
     // false: los eventos solo se ejecutan si el canvas tiene el foco
     setGlobalKeyEvents: function(v) {
@@ -614,7 +635,7 @@ Cevent.fn = Cevent.prototype = {
         
         this.ctx.save();
         // Aplicar zoom
-        Cevent.__zoom = this.zoom;
+        Cevent.__zoom = this.__zoom;
         
         this.__beforeDraw && this.__beforeDraw.call(this);
 
@@ -639,7 +660,11 @@ Cevent.fn = Cevent.prototype = {
 
     /* TODO: una buena implementación de animaciones */
     loop: function( fn ) {
-         var self = this, tdata = data(this.cv);
+         var self = this, tdata = data(this.cv), play_flag;
+        
+        if (!is(fn, func) && !is(tdata.loop, func)) {
+            throw new Error("Function required");
+        }
 
         if ( is(fn, func) ) {
             tdata.loop = fn;
@@ -647,20 +672,20 @@ Cevent.fn = Cevent.prototype = {
 
         fn = tdata.loop;
 
-        if ( this.play ) {
-            this.stop();
-        }
-
-        this.play = true;
+        play_flag = this.play = ++uuid;
 
         (function() {
-            if (!self.play) { return; }
+            if (play_flag !== self.play) { return; }
 
             requestAnimFrame(arguments.callee);
 
             self.redraw();
 
-            if ( fn ) {    fn.call(self, self);    }
+            if ( fn ) {
+                self.ctx.save();
+                fn.call(self, self);
+                self.ctx.restore();
+            }
 
             self.frameCount += 1;
         }());
@@ -672,9 +697,7 @@ Cevent.fn = Cevent.prototype = {
 
     // detener Loop
     stop: function() {
-        window.clearTimeout( this.play );
         delete this.play;
-
         return this;
     }
 };
@@ -797,7 +820,8 @@ Cevent.fn.drag = function( handlers ) {
 };
 
 /* Registrar Una Clase */
-Cevent.registre = function( name, Class ) {
+// para no dañar código previo se mantiene registre y register
+Cevent.registre = Cevent.register = function( name, Class ) {
         name = name.toLowerCase();
     var constName = name.charAt(0).toUpperCase() + name.substring(1);
 

@@ -1,0 +1,130 @@
+Métodos
+=========
+
+Selección
+---------
+
+.. js:function:: Cevent.get(i)
+    
+    Retorna el objeto almacenado en la posición **i** (acepta índices negativos)
+    
+.. code-block:: javascript
+
+    // obtener ultimo objeto
+    var rect = ce.rect(50, 30, 15).get(-1);
+    
+.. js:function:: Cevent.addId(id)
+    
+    Marca el ultimo objeto dibujado con un identificador que lo diferencia de objetos
+    del mismo tipo, cada objeto solo puede tener un identificador.
+
+.. js:function:: Cevent.find(selector)
+
+    Retorna un nueva instancia de canvas-event, capaz de manipular todos los objetos que
+    coinciden con el :doc:`selector <find>`.
+
+
+.. code-block:: javascript
+
+    // cambiar color a todos los circulos
+    ce.find("circle").attr("fill", "green");
+
+.. js:function:: Cevent.getAll(selector)
+    
+    Retorna un array con los objetos que coinciden con el :doc:`selector <find>`.
+
+.. js:function:: Cevent.remove(Shape)
+
+    Remueve la figura de la lista de objetos a ser dibujados.
+    
+.. code-block:: javascript
+
+    // Eliminar objeto seleccionado
+    ce.keydown("del", function(c, e) {
+        if (c.focused) {
+            c.remove(c.focused);
+        }
+    });
+
+
+Dibujo
+______
+
+.. js:function:: Cevent.clear(x, y, width, height)
+
+    Borra el área especificada del lienzo, si se llama sin argumentos borra el lienzo completo.
+    
+.. js:function:: Cevent.draw()
+
+    Dibuja todos los objetos almacenados sin borrar previamente el lienzo.
+
+.. js:function:: Cevent.redraw()
+    
+    Borra el lienzo y luego dibuja todo los objetos almacenados, es equivalente a `ce.clear().draw()`.
+    
+.. js:function:: Cevent.loop(function)
+
+    Llama la función especificada y luego redibuja el lienzo (aproximadamente 60 veces por segundo).
+    
+    La función recibe como único argumento la instancia de canvas-event que se esta animando.
+    
+.. js:function:: Cevent.stop()
+    
+    Detiene el loop de animación.
+    
+.. js:function:: Cevent.zoomIn()
+.. js:function:: Cevent.zoomOut()
+.. js:function:: Cevent.zoomTo(scale)
+
+    Permiten alejar y acercar los objetos dibujados mientras los eventos del ratón siguen
+    comportándose como se esperaría.
+    
+Manejo de atributos
+-------------------
+
+.. js:function:: Cevent.attr(attr, value)
+                 Cevent.attr({attr: value, attr: value})
+
+    Cambia o establece un atributo del ultimo objeto dibujado u objetos retornados por :js:func:`find <Cevent.find>`.
+    
+    Los atributos que comparten todo los objetos y sus valor por defecto son:
+    
+    * **fill**: #000
+    * **stroke**: ""
+    * **tx/ty**: 0 (traslación en x/y)
+    * **scaleX/scaleY**: 1
+    * **skewX/skewY**: 0
+    * **lineWidth**: 1
+    * **lineJoin**: miter
+    * **lineCap**: butt
+    * **alpha**: 1 (transparencia)
+    * **rotation**: 0 (rotación en `grados sexadesimales <http://es.wikipedia.org/wiki/Sistema_sexagesimal>`_)
+    * **composite**: source-over
+    * **shadowColor**: rgba(0, 0, 0, 0.0)
+    * **shadowOffsetX/shadowOffsetY**: 0
+    * **shadowBlur**: 0
+    * **fontStyle**: normal
+    * **fontWeight**: normal
+    * **fontSize**: 10
+    * **fontFamily**: Arial
+
+    Se pueden especificar otros atributos siempre cuando no entren con conflicto
+    con los anteriores.
+    
+.. code-block:: javascript
+
+    ce.circle(50, 50, 20).attr({
+        // color verde
+        fill: "green",
+        // específico de este objeto
+        velx: Math.random(),
+        vely: Math.random()
+    }).draw();
+    
+Los siguientes métodos tiene el mismo efecto que llamar a **attr** con los valore adecuados:
+
+.. js:function:: Cevent.skewX(amount)
+.. js:function:: Cevent.skewY(amount)
+.. js:function:: Cevent.translate(x, y)
+.. js:function:: Cevent.scale(x, y)
+.. js:function:: Cevent.rotate(deg)

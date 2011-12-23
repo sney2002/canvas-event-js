@@ -22,7 +22,7 @@
     <script type="text/javascript" src="static/underscore.js"></script>
     <script type="text/javascript" src="static/doctools.js"></script>
     <link rel="top" title="canvas-event-js v1 documentation" href="index.html" />
-    <link rel="next" title="Selectores y los métodos find y getAll" href="find.html" />
+    <link rel="next" title="Drag and Drop" href="drag-n-drop.html" />
     <link rel="prev" title="Eventos del ratón" href="mouse-events.html" />
    
   
@@ -37,7 +37,7 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="find.html" title="Selectores y los métodos find y getAll"
+          <a href="drag-n-drop.html" title="Drag and Drop"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="mouse-events.html" title="Eventos del ratón"
@@ -102,17 +102,17 @@ a la instancia de canvas-event y no a un objeto en particular.</p>
 <span class="p">});</span>
 </pre></div>
 </div>
-</div>
 <div class="section" id="propiedad-focused">
-<h1>Propiedad focused<a class="headerlink" href="#propiedad-focused" title="Permalink to this headline">¶</a></h1>
+<h2>Propiedad focused<a class="headerlink" href="#propiedad-focused" title="Permalink to this headline">¶</a></h2>
 <p>La propiedad <strong>focused</strong> guarda una referencia al objeto con el foco del ratón,
-así se pueden ejecutar acciones sobre éste.</p>
+así se pueden ejecutar acciones sobre éste (<a class="reference internal" href="example-remove.html"><em>ver ejemplo</em></a>).</p>
 <div class="highlight-javascript"><div class="highlight"><pre><span class="nx">ce</span><span class="p">.</span><span class="nx">keydown</span><span class="p">(</span><span class="s2">&quot;delete&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">if</span> <span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">focused</span> <span class="p">)</span> <span class="p">{</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">focused</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">});</span>
 </pre></div>
+</div>
 </div>
 </div>
 
@@ -124,14 +124,16 @@ así se pueden ejecutar acciones sobre éste.</p>
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Eventos del teclado</a></li>
+<li><a class="reference internal" href="#">Eventos del teclado</a><ul>
 <li><a class="reference internal" href="#propiedad-focused">Propiedad focused</a></li>
+</ul>
+</li>
 </ul>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
       <li>Previous: <a href="mouse-events.html" title="previous chapter">Eventos del ratón</a></li>
-      <li>Next: <a href="find.html" title="next chapter">Selectores y los métodos find y getAll</a></li>
+      <li>Next: <a href="drag-n-drop.html" title="next chapter">Drag and Drop</a></li>
   </ul></li>
 </ul>
   <h3>This Page</h3>
@@ -157,7 +159,7 @@ así se pueden ejecutar acciones sobre éste.</p>
       <div class="clearer"></div>
     </div>
 
-    <a href="http://github.com/sney2002/canvas-event-js"><img style="position: fixed; top: 0; right: 0; border: 0;"
+    <a href="http://github.com/sney2002/canvas-event-js"><img style="z-index: 1000; position: fixed; top: 0; right: 0; border: 0;"
     src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
   
 
