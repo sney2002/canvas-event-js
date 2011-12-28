@@ -68,6 +68,19 @@ var window = this,
             for ( ;(value = iterable[i++]) && callback(value, i) !== false; ) {}
         }
     },
+    
+    // Webkit (chrome 16+) marca como obsoleto el uso de layerX/layerY
+    // se hace necesario hallar "manualmente" la posición del canvas
+    findPosition = function (obj) {
+        var curleft = 0, curtop = 0;
+        if (obj.offsetParent) {
+            do {
+                curleft += obj.offsetLeft;
+                curtop += obj.offsetTop;
+            } while (obj = obj.offsetParent);
+        }
+        return { x: curleft, y: curtop };;
+    },
 
     // Una simplificación de jQuery.data
     data = function( obj, name, data ) {
@@ -167,7 +180,7 @@ var window = this,
         eventQueue = [];
         context.draw();    
     },
-
+    
     /* Eventos del mouse:
      *        El evento mousemove se encarga de seleccionar el objeto sobre el cual
      *        se deben ejecutar las acciones, este objeto se guarda en la propiedad _curHover.
@@ -179,9 +192,9 @@ var window = this,
             self.lastX = self.x; self.lastY = self.y;
             //console.log(self.x, self.y)
 
-            // Modificar coordenadas (x,y), sumar y restar 1 en caso que layerX/Y sea 0
-            self.x = ((( e && e.layerX + 1) || window.event.offsetX + 1) - 1) / self.__zoom;
-            self.y = ((( e && e.layerY + 1) || window.event.offsetY + 1) - 1) / self.__zoom;
+            // Modificar coordenadas (x,y), sumar y restar 1 en caso que sea 0
+            self.x = ((( e && (e.pageX - self._pos.x) + 1) || window.event.offsetX + 1) - 1) / self.__zoom;
+            self.y = ((( e && (e.pageY - self._pos.y) + 1) || window.event.offsetY + 1) - 1) / self.__zoom;
 
             // Mientras se este arrastrando un objeto no hay necesidad de comprobar nada
             if ( !self._clicked ) {
@@ -409,6 +422,9 @@ Cevent.fn = Cevent.prototype = {
             // Contenedores
             this._shapes = data(cv, "shapes", []);
             this._last = null;
+            
+            // hallar posición del canvas
+            this.calcCanvasPosition();
 
             // Eventos del mouse
             cv[addEventListener]("mousemove", mousemove(this), false);
@@ -435,6 +451,13 @@ Cevent.fn = Cevent.prototype = {
             this._shapes = data(cv, "shapes");
             this._last = shapes;
         }
+    },
+    
+    // Si se cambia dinámicamente la posición del canvas (margin, padding, top..)
+    // es necesario recalcularla con calcCanvasPosition.
+    calcCanvasPosition: function() {
+        this._pos = findPosition(this.cv);
+        return this;
     },
 
     // obtener el elemento en la posición i o todos si no se especifica
@@ -671,7 +694,8 @@ Cevent.fn = Cevent.prototype = {
         }
 
         fn = tdata.loop;
-
+        
+        // play_flag se guarda por closure
         play_flag = this.play = ++uuid;
 
         (function() {
@@ -681,7 +705,11 @@ Cevent.fn = Cevent.prototype = {
 
             self.redraw();
 
-            if ( fn ) {    self.ctx.save(); fn.call(self, self); self.ctx.restore();   }
+            if ( fn ) {
+                self.ctx.save();
+                fn.call(self, self);
+                self.ctx.restore();
+            }
 
             self.frameCount += 1;
         }());
