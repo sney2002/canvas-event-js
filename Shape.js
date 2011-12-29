@@ -1254,9 +1254,6 @@ extend(Cevent, {
     z: z
 });
 
-// Mayor rendimiento en hitTest http://jsperf.com/canvas-event-js-hittest-performance
-testCtx.fill = testCtx.stroke = function(){};
-
 // verificar que arcTo este bien implementado, de lo contrario reemplazarlo
 (function() {
 
@@ -1337,6 +1334,9 @@ if (testCtx.getImageData(58, 31, 1, 1).data[3]) {
     };
 }
 })();
+
+// Mayor rendimiento en hitTest http://jsperf.com/canvas-event-js-hittest-performance
+testCtx.fill = testCtx.stroke = function(){};
 
 /* Registrar Objetos */
 Cevent.register( "image", Img );
