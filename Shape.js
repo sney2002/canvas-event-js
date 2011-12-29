@@ -255,7 +255,6 @@ var math = Math,
 
             if (  this.fill  ) { ctx.fill(); }
             if ( this.stroke ) { ctx.stroke(); }
-
         },
 
         hitTest: function( point ) {
@@ -306,6 +305,18 @@ var math = Math,
             if (this.stroke) {
                 ctx.strokeText(this.text, this.x, this.y + this.h);
             }
+        },
+        
+        hitTest: function(point) {
+            if ( this.skewX || this.skewY ) {
+                this.setTransform(testCtx);
+                testCtx.beginPath();
+                testCtx.rect(this.x, this.y, this.w, this.h);
+                testCtx.closePath();
+                return testCtx.isPointInPath( point.x, point.y );
+            }
+
+            return this._super(point);
         }
         
     }),
@@ -1243,8 +1254,10 @@ extend(Cevent, {
     z: z
 });
 
+// Mayor rendimiento en hitTest http://jsperf.com/canvas-event-js-hittest-performance
+testCtx.fill = testCtx.stroke = function(){};
+
 // verificar que arcTo este bien implementado, de lo contrario reemplazarlo
-// TODO: nota
 (function() {
 
 testCtx.moveTo(30, 30);
@@ -1264,20 +1277,20 @@ if (testCtx.getImageData(58, 31, 1, 1).data[3]) {
     }
 
     CanvasRenderingContext2D.prototype.arcTo = function(x1, y1, x2, y2, radius, x0, y0) {
-	    
-	    // aplicar método original si no se suplen x0, y0
-	    if (isNaN(x0 + y0)) { 
-	        return originalArcTo.apply(this, aruguments);
-	    }
+        
+        // aplicar método original si no se suplen x0, y0
+        if (isNaN(x0 + y0)) { 
+            return originalArcTo.apply(this, arguments);
+        }
 
-	    var dir, a2, b2, c2, cosx, sinx, 
+        var dir, a2, b2, c2, cosx, sinx, 
             d, anx, any, bnx, bny, x3, y3, 
             x4, y4, ccw, cx, cy, a0, a1;
-	
-	    // If the point (x0, y0) is equal to the point (x1, y1),
-	    // or if the point (x1, y1) is equal to the point (x2, y2),
-	    // or if the radius radius is zero, then the method must add the point (x1, y1) to the subpath
-	    // and connect that point to the previous point (x0, y0) by a straight line.
+    
+        // If the point (x0, y0) is equal to the point (x1, y1),
+        // or if the point (x1, y1) is equal to the point (x2, y2),
+        // or if the radius radius is zero, then the method must add the point (x1, y1) to the subpath
+        // and connect that point to the previous point (x0, y0) by a straight line.
         if ((x1 == x0 && y1 == y0) || (x1 == x2 && y1 == y2) || radius == 0) {
             this.lineTo(x1, y1);
             return;
