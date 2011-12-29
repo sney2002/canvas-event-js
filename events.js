@@ -443,8 +443,8 @@ Cevent.fn = Cevent.prototype = {
 
             // Prevenir cambio de cursor al arrastrar (webkit)
             if ("onselectstart" in cv) {
-                cv.onselectstart = function() { return false; }
-                cv.onmousedown = function() { return false; }
+                cv.onselectstart = function() { return false; };
+                cv.onmousedown = function() { return false; };
             }
 
         } else {
