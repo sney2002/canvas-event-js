@@ -20,6 +20,7 @@
  * THE SOFTWARE.
  */
 (function(Cevent, window) {
+"use strict";
 var math = Math,
     PI = math.PI,
     TWOPI = 2 * PI,
@@ -61,22 +62,24 @@ var math = Math,
     },
 
     cv = document.createElement("canvas"),
-    testCtx = cv.getContext("2d"),
+    
+    testCtx = cv.getContext && cv.getContext("2d"),
+    
     
     // Distancia entre dos puntos
-    distance = function( p1, p2 ) {
-        return sqrt( pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2) );
+    distance = function(p1, p2) {
+        return sqrt(pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2));
     },
     
     // Distancia entre un punto y una linea
     // x1, y1, x2, y2  son las coordenadas del segmento de recta
     // solución basada en http://local.wasp.uwa.edu.au/~pbourke/geometry/pointline/
-    distanceToLine = function( x1, y1, x2, y2, point ) {
+    distanceToLine = function(x1, y1, x2, y2, point) {
         var deltaX = x2 - x1,
             deltaY = y2 - y1,
             closestPoint = {}, u;
         
-        if ( deltaX === 0 && deltaY === 0 ) {
+        if (deltaX === 0 && deltaY === 0) {
             return;
         }
         
@@ -90,23 +93,23 @@ var math = Math,
             closestPoint = { x: x1 + u * deltaX, y: y1 + u * deltaY};
         }
         
-        return distance( closestPoint, point );
+        return distance(closestPoint, point);
     },
     
     // Rotar punto representado por (x, y)
-    rotate = function( x, y, angle ) {
+    rotate = function(x, y, angle) {
         angle = DEGREE * angle;
         return {
-            x: x * cos( angle ) - y * sin( angle ),
-            y: x * sin( angle ) + y * cos( angle )
+            x: x * cos(angle) - y * sin(angle),
+            y: x * sin(angle) + y * cos(angle)
         };
     },
     
     
-    extend = function( orig, obj ) {
+    extend = function(orig, obj) {
         var attr;
-        for ( attr in obj ) {
-            if ( hasOwnProperty.call(obj, attr) ) {
+        for (attr in obj) {
+            if (hasOwnProperty.call(obj, attr)) {
                 orig[ attr ] = obj[ attr ];
             }
         }
@@ -116,41 +119,39 @@ var math = Math,
      * Super clase Shape *
      *********************/
     Shape = Class.extend({
-        init: function( x, y ) {
+        init: function(x, y) {
             this.x = x || 0;
             this.y = y || 0;
-            extend( this, defaultStyle );
+            extend(this, defaultStyle);
         },
 
         // retorna posición real del objeto en el canvas
         // eje: un objeto con posición (50,50) trasladado (5,0) realmente se encuentra en (55,50)
         position: function() {
-            var p = rotate( this.x  * this.scaleX, this.y * this.scaleY, this.rotation );
+            var p = rotate(this.x  * this.scaleX, this.y * this.scaleY, this.rotation);
 
             return {
                 x: p.x + this.tx,
                 y: p.y + this.ty
             };
         },
-        
+
         // trasladar coordenadas del objeto
-        rmove: function( x, y ) {
+        rmove: function(x, y) {
             this.tx += x;
             this.ty += y;
         },
 
         // Cambiar propiedades del objeto
-        attr: function( attrs, value ) {
+        attr: function(attrs, value) {
             var attr;
 
-            if ( hasOwnProperty.call(defaultStyle, attrs) ) {
+            if (typeof(attrs) == "string") {
                 this[ attrs ] = value;
 
             } else {
-                for ( attr in attrs ) {
-                    //if ( hasOwnProperty.call(defaultStyle, attr) ) {
-                        this[ attr ] = attrs[ attr ];
-                    //}
+                for (attr in attrs) {
+                    this[ attr ] = attrs[ attr ];
                 }
             }
 
@@ -158,7 +159,7 @@ var math = Math,
         },
         
         // aplicar "estilo" al objeto
-        applyStyle: function( ctx ) {
+        applyStyle: function(ctx) {
             var shadowBlur = this.shadowBlur,
                 shadowOffsetX = this.shadowOffsetX,
                 shadowOffsetY = this.shadowOffsetY;
@@ -167,12 +168,12 @@ var math = Math,
             ctx.globalAlpha = this.alpha;
             ctx.globalCompositeOperation = this.composite;
 
-            if ( this.stroke ) {
+            if (this.stroke) {
                 ctx.strokeStyle = this.stroke;
                 ctx.lineWidth = this.lineWidth;
             }
 
-            if ( shadowOffsetX || shadowOffsetY || shadowBlur ) {
+            if (shadowOffsetX || shadowOffsetY || shadowBlur) {
                 ctx.shadowColor = this.shadowColor;
                 ctx.shadowOffsetX = shadowOffsetX;
                 ctx.shadowOffsetY = shadowOffsetY;
@@ -182,15 +183,15 @@ var math = Math,
         },
 
         // aplicar transformaciones al lienzo
-        setTransform: function( ctx ) {
+        setTransform: function(ctx) {
             var zoom = Cevent.__zoom,
                 scaleX = this.scaleX * zoom,
                 scaleY = this.scaleY * zoom,
                 skewX = this.skewX * zoom,
                 skewY = this.skewY * zoom,
                 angle = this.rotation * DEGREE,
-                s = sin( angle ),
-                c = cos( angle ),
+                s = sin(angle),
+                c = cos(angle),
                 dx = this.tx * zoom,
                 dy = this.ty * zoom,
                 
@@ -201,23 +202,30 @@ var math = Math,
                 m12 = s * scaleX + c * skewY,
                 m22 = s * skewX + c * scaleY;
 
-            ctx.setTransform( m11, m12, m21, m22, dx, dy );
+            ctx.setTransform(m11, m12, m21, m22, dx, dy);
         },
 
-        draw: function ( ctx ) {
+        draw: function (ctx) {
             throw new Error("El método draw no se ha implementado");
         },
         
         fill_or_stroke: function(ctx) {
-            if (  this.fill  ) { ctx.fill(); }
-            if ( this.stroke ) { ctx.stroke(); }
+            if ( this.fill ) { ctx.fill(); }
+            if (this.stroke) { ctx.stroke(); }
         },
 
         // retorna true si point se encuentra dentro del Objeto
         // Inspirado en canvasShop de Jiwei Xu (http://www.xujiwei.com)
-        hitTest: function( point ) {
-            this.draw( testCtx );
-            return testCtx.isPointInPath( point.x, point.y );
+        hitTest: function(point) {
+            if (testCtx && testCtx.isPointInPath) {
+                this.draw(testCtx);
+                // Por algún motivo firefox necesita que el sistema de coordenadas
+                // se "restaure"
+                testCtx.setTransform(1, 0, 0, 1, 0, 0);
+                return testCtx.isPointInPath(point.x, point.y);
+            } else {
+                throw Error("Método isPointInPath no soportado: Necesita FlashCanvasPro");
+            }
         }
     }),
 
@@ -225,49 +233,48 @@ var math = Math,
      * Objeto Rectángulo *
      *********************/
     Rect = Shape.extend({
-        init: function( x, y, width, height, radius ) {
+        init: function(x, y, width, height, radius) {
             this.r = radius || 0;
             this.w = width || 5;
             this.h = height || width;
-            this._super( x, y );
+            this._super(x, y);
         },
 
-        draw: function( ctx ) {
+        draw: function(ctx) {
             var x = this.x,
                 y = this.y,
                 w = this.w,
                 h = this.h;
 
-            this.applyStyle( ctx );
-            this.setTransform( ctx );
-
+            this.applyStyle(ctx);
+            this.setTransform(ctx);
             ctx.beginPath();
             
             // bordes redondeados
-            if ( this.r ) {
-                Cevent.setContext( ctx ).polygon( x, y, x+w, y, x+w, y+h, x, y+h, this.r );
+            if (this.r) {
+                Cevent.setContext(ctx).polygon(x, y, x+w, y, x+w, y+h, x, y+h, this.r);
 
             } else {
-                ctx.rect( x, y, round(w), round(h) );
+                ctx.rect(x, y, round(w), round(h));
             }
 
             ctx.closePath();
 
-            if (  this.fill  ) { ctx.fill(); }
-            if ( this.stroke ) { ctx.stroke(); }
+            if ( this.fill ) { ctx.fill(); }
+            if (this.stroke) { ctx.stroke(); }
         },
 
-        hitTest: function( point ) {
-            if ( this.skewX || this.skewY || this.r ) {
-                return this._super( point );
+        hitTest: function(point) {
+            if (this.skewX || this.skewY || this.r) {
+                return this._super(point);
             }
 
             var thisPos = this.position(),
-                mousePos = rotate( point.x - thisPos.x, point.y - thisPos.y, -this.rotation );
+                mousePos = rotate(point.x - thisPos.x, point.y - thisPos.y, -this.rotation);
 
             //console.log(x+" ,"+y)
             return (mousePos.x >= 0 && mousePos.x <= this.w * this.scaleX &&
-                    mousePos.y >= 0 && mousePos.y <= this.h * this.scaleY );
+                    mousePos.y >= 0 && mousePos.y <= this.h * this.scaleY);
         }
     }),
     
@@ -308,67 +315,68 @@ var math = Math,
         },
         
         hitTest: function(point) {
-            if ( this.skewX || this.skewY ) {
+            if (this.skewX || this.skewY && testCtx && testCtx.isPointInPath) {
                 this.setTransform(testCtx);
                 testCtx.beginPath();
                 testCtx.rect(this.x, this.y, this.w, this.h);
                 testCtx.closePath();
-                return testCtx.isPointInPath( point.x, point.y );
+                return testCtx.isPointInPath(point.x, point.y);
             }
 
             return this._super(point);
         }
         
     }),
+    
+    imageCache = {},
 
     /*****************
      * Objeto Imagen *
      *****************/
     Img = Rect.extend({
-        init: function( x, y, src ) {
-            this.setImg( src );
-            this._super( x, y, this.img.width, this.img.height );
-            
-            if ( !this.img.complete ) {
-                var self = this;
-                // esperar que la imagen cargue
-                this.img.onload = function() {
-                    self.w = this.width;
-                    self.h = this.height;
-                };
-
-            } else {
-                this.w = this.img.width;
-                this.h = this.img.height;
-            }
-            
+        init: function(x, y, src) {
+            this.setImg(src);
+            this._super(x, y, this.img.width, this.img.height);
         },
 
-        setImg: function( img ) {
-            if ( img.nodeName == "IMG" ) {
+        setImg: function(img) {
+            if (imageCache[img]) {
+                this.img = imageCache[img];
+                this.src = this.img.src;
+                return;
+            }
+
+            if (img.nodeName == "IMG") {
                 this.img = img;
 
             } else {
-                this.img = new Image();
-                this.img.src = img + "";
+                img += "";
+                this.img = imageCache[img] = new Image();
+                this.img.src = img;
             }
+            this.img.onload = function() {
+                Cevent.forse_redraw();
+            };
 
             this.src = this.img.src;
         },
 
-        draw: function( ctx ) {
+        draw: function(ctx) {
             var x = this.x,
                 y = this.y;
+                
+            this.w = this.img.width;
+            this.h = this.img.height;
 
-            this.applyStyle( ctx );
-            this.setTransform( ctx );
+            this.applyStyle(ctx);
+            this.setTransform(ctx);
 
-            if ( ctx === testCtx ) {
+            if (ctx === testCtx) {
                 ctx.beginPath();
-                ctx.rect( x, y, round(this.w), round(this.h) );
+                ctx.rect(x, y, round(this.w), round(this.h));
                 ctx.closePath();
             } else {
-                ctx.drawImage( this.img, x, y );
+                ctx.drawImage(this.img, x, y);
             }
         }
     }),
@@ -378,7 +386,7 @@ var math = Math,
      *****************/
     Ellipse = Rect.extend({
         // Extraído de Processing http://processingjs.org
-        draw: function( ctx ) {
+        draw: function(ctx) {
             var x = this.x,
                 y = this.y,
                 w = this.w,
@@ -388,21 +396,21 @@ var math = Math,
                 c_y = C * h;
 
             
-            this.applyStyle( ctx );
-            this.setTransform( ctx );
+            this.applyStyle(ctx);
+            this.setTransform(ctx);
 
             ctx.beginPath();
 
-            ctx.moveTo( x + w, y );
-            ctx.bezierCurveTo( x + w, y - c_y, x + c_x, y - h, x, y - h );
-            ctx.bezierCurveTo( x - c_x, y - h, x - w, y - c_y, x - w, y );
-            ctx.bezierCurveTo( x - w, y + c_y, x - c_x, y + h, x, y + h );
-            ctx.bezierCurveTo( x + c_x, y + h, x + w, y + c_y, x + w, y );
+            ctx.moveTo(x + w, y);
+            ctx.bezierCurveTo(x + w, y - c_y, x + c_x, y - h, x, y - h);
+            ctx.bezierCurveTo(x - c_x, y - h, x - w, y - c_y, x - w, y);
+            ctx.bezierCurveTo(x - w, y + c_y, x - c_x, y + h, x, y + h);
+            ctx.bezierCurveTo(x + c_x, y + h, x + w, y + c_y, x + w, y);
 
             ctx.closePath();
 
-            if ( this.fill ) { ctx.fill(); }
-            if ( this.stroke ) { ctx.stroke(); }
+            if (this.fill) { ctx.fill(); }
+            if (this.stroke) { ctx.stroke(); }
 
         },
 
@@ -413,7 +421,7 @@ var math = Math,
      * Objeto Arco    *
      ******************/
     Arc = Shape.extend({
-        init: function( x, y, radius, startAngle, endAngle, antiClockWise ) {
+        init: function(x, y, radius, startAngle, endAngle, antiClockWise) {
             this.clockwise = antiClockWise;
             this.endAngle = endAngle;
             this.startAngle = startAngle;
@@ -421,26 +429,26 @@ var math = Math,
             this._super(x, y);
         },
 
-        draw: function ( ctx ) {
+        draw: function (ctx) {
             var x = this.x,
                 y = this.y;
 
             this.applyStyle(ctx);
-            this.setTransform( ctx );
+            this.setTransform(ctx);
 
             ctx.beginPath();
             ctx.arc(
                 x,
                 y,
-                round( this.r ),
+                round(this.r),
                 this.startAngle || PI * 2,
                 this.endAngle || 0, !!this.clockwise
             );
-            ctx.lineTo( x, y );
+            ctx.lineTo(x, y);
             ctx.closePath();
 
-            if (  this.fill  ) { ctx.fill(); }
-            if ( this.stroke ) { ctx.stroke(); }
+            if ( this.fill ) { ctx.fill(); }
+            if (this.stroke) { ctx.stroke(); }
 
         }
     }),
@@ -450,41 +458,41 @@ var math = Math,
      * Objeto Circulo *
      ******************/
     Circle = Shape.extend({
-        init: function( x, y, radius ) {
+        init: function(x, y, radius) {
             this.r = radius || 5;
             this._super(x, y);
         },
 
-        draw: function ( ctx ) {
+        draw: function (ctx) {
             var x = this.x,
                 y = this.y;
 
             this.applyStyle(ctx);
-            this.setTransform( ctx );
+            this.setTransform(ctx);
 
             ctx.beginPath();
             ctx.arc(
                 x,
                 y,
-                round( this.r ),
+                round(this.r),
                 0, PI * 2, true
-            );
+           );
             ctx.closePath();
 
-            if (  this.fill  ) { ctx.fill(); }
-            if ( this.stroke ) { ctx.stroke(); }
+            if ( this.fill ) { ctx.fill(); }
+            if (this.stroke) { ctx.stroke(); }
 
         },
 
-        hitTest: function( point ) {
-            if ( this.skewX || this.skewY || this.scaleX !== this.scaleY ) {
-                return this._super( point );
+        hitTest: function(point) {
+            if (this.skewX || this.skewY || this.scaleX !== this.scaleY) {
+                return this._super(point);
             }
 
             var lineWidth = !!this.stroke && this.lineWidth,
                 thisPos = this.position();
 
-            return distance( point, thisPos ) <= (this.r + lineWidth) * this.scaleX;
+            return distance(point, thisPos) <= (this.r + lineWidth) * this.scaleX;
         }
     }),
     
@@ -492,42 +500,39 @@ var math = Math,
      * Objeto Linea *
      ****************/
     Line = Shape.extend({
-        init: function( x1, y1, x2, y2 ) {
+        init: function(x1, y1, x2, y2) {
             this.x2 = x2;
             this.y2 = y2;
-            this._super( x1, y1 );
+            this._super(x1, y1);
             this.stroke = "#000";
         },
         
-        rmove: function( x, y ) {
+        rmove: function(x, y) {
             this.x += x;
             this.y += y;
             this.x2 += x;
             this.y2 += y;
         },
         
-        applyStyle: function( ctx ) {
+        applyStyle: function(ctx) {
             ctx.lineJoin = this.lineJoin;
             ctx.lineCap =  this.lineCap;
-            this._super( ctx );
+            this._super(ctx);
         },
 
-        draw: function( ctx ) {
-            var x = this.x,
-                y = this.y;
-
-            this.applyStyle( ctx );
-            this.setTransform( ctx );
+        draw: function(ctx) {
+            this.applyStyle(ctx);
+            this.setTransform(ctx);
 
             ctx.beginPath();
-            ctx.moveTo( x, y );
-            ctx.lineTo( this.x2, this.y2);
+            ctx.moveTo(this.x,  this.y);
+            ctx.lineTo(this.x2, this.y2);
             ctx.stroke();
 
         },
 
-        hitTest: function( point ) {
-            return distanceToLine( this.x, this.y, this.x2, this.y2, point ) <= this.lineWidth+2;
+        hitTest: function(point) {
+            return distanceToLine(this.x, this.y, this.x2, this.y2, point) <= this.lineWidth+2;
         }
     }),
     
@@ -552,41 +557,41 @@ var math = Math,
     // -0.4, 3.14, .54
     NUMBER = /[\-+]?(?:\d+[.]?\d*|[.]\d+)(?:[Ee][\-+]?\d+)?/g,
 
-    angleBetweenVectors = function ( x1, y1, x2, y2 ) {
+    angleBetweenVectors = function (x1, y1, x2, y2) {
         var dotproduct = x1 * x2 + y1 * y2,
-            d1 = sqrt( x1 * x1 + y1 * y1 ),
-            d2 = sqrt( x2 * x2 + y2 * y2 ),
+            d1 = sqrt(x1 * x1 + y1 * y1),
+            d2 = sqrt(x2 * x2 + y2 * y2),
             x = dotproduct / (d1 * d2),
             angle, sign;
 
         // Rounding errors can cause x to be slightly greater than 1
-        if ( x > 1 ) {
+        if (x > 1) {
             x = 1;
 
-        } else if ( x < -1 ) {
+        } else if (x < -1) {
             x = -1;
         }
 
-        angle = abs( acos(x) );
+        angle = abs(acos(x));
         sign = x1 * y2 - y1 * x2;
 
-        return sign === abs( sign ) ? angle : -angle;
+        return sign === abs(sign) ? angle : -angle;
     },
     
-    rotatePoint = function ( x, y, angle ) {
+    rotatePoint = function (x, y, angle) {
         return [ x * cos(angle) - y * sin(angle),
                  y * cos(angle) + x * sin(angle)];
     },
     
     // A utility function: if there is no current supath, then start one
     // at this point.  This is from the spec.
-    ensure = function( self, x, y ) {
-        if ( _pathIsEmpty ) {
-            self.ctx.moveTo( x, y );
+    ensure = function(self, x, y) {
+        if (_pathIsEmpty) {
+            self.ctx.moveTo(x, y);
         }
     },
 
-    setCurrent = function( x, y ) {
+    setCurrent = function(x, y) {
         currentX = x;
         currentY = y;
         _lastCCP = null;  // Reset control point status
@@ -597,16 +602,16 @@ var math = Math,
     // Check that the current point is defined and throw an exception if
     // it is not defined.  This is used by relative motion commands.
     checkcurrent = function() {
-        if ( currentX === undefined ) {
-            throw new Error( "No current point; can't use relative coordinates" );
+        if (currentX === undefined) {
+            throw new Error("No current point; can't use relative coordinates");
         }
     },
 
     // Utility to check that args.length === n or (args.length % m) === n
     // and that args.length < min. Throws an error otherwise.
     // Only the first two arguments are required
-    check = function( args, n, m, min ) {
-        if ( n !== (m ? args.length % m : args.length) || args.length < min ) {
+    check = function(args, n, m, min) {
+        if (n !== (m ? args.length % m : args.length) || args.length < min) {
             throw new Error("wrong number of arguments");
         }
     },
@@ -617,23 +622,23 @@ var math = Math,
      * M and L, for example are compatible with moveTo and lineTo
      */
 
-    M = function( x, y ) {
-        this.ctx.moveTo( x, y );
+    M = function(x, y) {
+        this.ctx.moveTo(x, y);
 
-        setCurrent( x, y );
+        setCurrent(x, y);
         startSubpathX = x;
         startSubpathY = y;
 
-        if ( arguments.length > 2 ) {
-            L.apply( this, slice.call(arguments, 2) );
+        if (arguments.length > 2) {
+            L.apply(this, slice.call(arguments, 2));
         }
 
         return this;
     },
 
     // Relative moveto
-    m = function( x, y ) {
-        if ( _pathIsEmpty ) {
+    m = function(x, y) {
+        if (_pathIsEmpty) {
             // From the SVG spec: "If a relative moveto (m) appears as
             // the first element of the path, then it is treated as a
             // pair of absolute coordinates."
@@ -644,123 +649,123 @@ var math = Math,
         x += currentX;
         y += currentY;
 
-        this.ctx.moveTo( x, y );
+        this.ctx.moveTo(x, y);
 
-        setCurrent( x, y );
+        setCurrent(x, y);
         startSubpathX = x;
         startSubpathY = y;
 
-        if ( arguments.length > 2 ){
-            l.apply( this, slice.call(arguments, 2) );
+        if (arguments.length > 2){
+            l.apply(this, slice.call(arguments, 2));
         }
 
         return this;
     },
 
     // Absolute lineto
-    L = function( x, y ) {
+    L = function(x, y) {
         var i, l = arguments.length;
 
-        check( arguments, 0, 2, 2 );
-        ensure( this, x, y ); // not SVG: for compatiblity with canvas API
-        this.ctx.lineTo( x ,y );
+        check(arguments, 0, 2, 2);
+        ensure(this, x, y); // not SVG: for compatiblity with canvas API
+        this.ctx.lineTo(x ,y);
 
-        for ( i = 2; i < l; i += 2 ) {
-            this.ctx.lineTo( x = arguments[i], y = arguments[i+1] );
+        for (i = 2; i < l; i += 2) {
+            this.ctx.lineTo(x = arguments[i], y = arguments[i+1]);
         }
 
-        setCurrent( x, y );
+        setCurrent(x, y);
         return this;
     },
 
     // Relative lineto
-    l = function( x, y ) {
+    l = function(x, y) {
         var i, cx = currentX, cy = currentY, l = arguments.length;
 
-        check( arguments, 0, 2, 2 );
+        check(arguments, 0, 2, 2);
         checkcurrent();
         
-        for ( i = 0; i < l; i += 2 ) {
-            this.ctx.lineTo( cx += arguments[i], cy += arguments[i+1] );
+        for (i = 0; i < l; i += 2) {
+            this.ctx.lineTo(cx += arguments[i], cy += arguments[i+1]);
         }
 
-        setCurrent( cx, cy );
+        setCurrent(cx, cy);
         return this;
     },
     
     // Closepath
     z = function() {
         this.ctx.closePath();
-        setCurrent( this, startSubpathX, startSubpathY );
+        setCurrent(this, startSubpathX, startSubpathY);
         return this;
     },
 
-    H = function( x ) {
+    H = function(x) {
         var i, l = arguments.length;
         checkcurrent();
 
-        for ( i = 0; i < l; i++ ) { 
-            L.call( this, arguments[i], currentY );
+        for (i = 0; i < l; i++) { 
+            L.call(this, arguments[i], currentY);
         }
 
         return this;
     },
 
-    h = function( x ) {
+    h = function(x) {
         var i, n = arguments.length;
 
-        for( i = 0; i < n; i++ ) { 
-            l.call( this, arguments[i], 0 );
+        for(i = 0; i < n; i++) { 
+            l.call(this, arguments[i], 0);
         }
 
         return this;
     },
 
-    V = function( y ) {
+    V = function(y) {
         var i, l = arguments.length;
         checkcurrent();
 
-        for ( i = 0; i < l; i++ ) { 
-            L.call( this, currentX, arguments[i] );
+        for (i = 0; i < l; i++) { 
+            L.call(this, currentX, arguments[i]);
         }
         return this;
     },
 
-    v = function( y ) {
+    v = function(y) {
         var i, n = arguments.length;
 
-        for ( i = 0; i < n; i++ ) { 
-            l.call( this, 0, arguments[i] );
+        for (i = 0; i < n; i++) { 
+            l.call(this, 0, arguments[i]);
         }
         return this;
     },
 
-    C = function( cx1, cy1, cx2, cy2, x, y ) {
+    C = function(cx1, cy1, cx2, cy2, x, y) {
         var i, a = arguments, l = arguments.length;
 
-        check( a, 0, 6, 6 );
-        ensure( this, cx1, cx2 ); // not SVG: for compatiblity with canvas API
+        check(a, 0, 6, 6);
+        ensure(this, cx1, cx2); // not SVG: for compatiblity with canvas API
 
-        this.ctx.bezierCurveTo( cx1, cy1, cx2, cy2, x, y );
+        this.ctx.bezierCurveTo(cx1, cy1, cx2, cy2, x, y);
 
-        for( i = 6; i < l; i +=6 ) {// polycurves
-            this.ctx.bezierCurveTo( a[i], a[i+1], cx2 = a[i+2], cy2 = a[i+3], x = a[i+4], y = a[i+5]);
+        for(i = 6; i < l; i +=6) {// polycurves
+            this.ctx.bezierCurveTo(a[i], a[i+1], cx2 = a[i+2], cy2 = a[i+3], x = a[i+4], y = a[i+5]);
         }
 
-        setCurrent( x, y );
+        setCurrent(x, y);
         _lastCCP = [cx2, cy2];
         return this;
     },
 
-    c = function( cx1, cy1, cx2, cy2, x, y ) {
+    c = function(cx1, cy1, cx2, cy2, x, y) {
         var i, a = arguments, l = a.length,
             x0 = currentX, y0 = currentY;
 
-        check( a, 0, 6, 6 );
+        check(a, 0, 6, 6);
         checkcurrent();
         
-        for ( i = 0; i < l; i+=6 ) { // polycurves
-            this.ctx.bezierCurveTo( x0 + a[i],
+        for (i = 0; i < l; i+=6) { // polycurves
+            this.ctx.bezierCurveTo(x0 + a[i],
                                 y0 + a[i+1],
                                 cx2 = x0 + a[i+2],
                                 cy2 = y0 + a[i+3],
@@ -768,50 +773,50 @@ var math = Math,
                                 y0 += a[i+5]);
         }
 
-        setCurrent( x0, y0 );
+        setCurrent(x0, y0);
         _lastCCP = [cx2,cy2];
 
         return this;
     },
     
-    Q = function( cx, cy, x, y ) {
+    Q = function(cx, cy, x, y) {
         var i, a = arguments, l = a.length;
 
-        check( arguments, 0, 4, 4 );
-        ensure( this, cx, cy ); // not SVG: canvas API compatibility
+        check(arguments, 0, 4, 4);
+        ensure(this, cx, cy); // not SVG: canvas API compatibility
 
         this.ctx.quadraticCurveTo(cx,cy,x,y);
 
-        for ( i = 4; i < l; i+=4 ) {
-            this.ctx.quadraticCurveTo( cx=a[i], cy=a[i+1], x=a[i+2], y=a[i+3] );
+        for (i = 4; i < l; i+=4) {
+            this.ctx.quadraticCurveTo(cx=a[i], cy=a[i+1], x=a[i+2], y=a[i+3]);
         }
 
-        setCurrent( x, y );
+        setCurrent(x, y);
         _lastQCP = [cx, cy];
         return this;
     },
 
-    q = function( cx, cy, x, y ) {
+    q = function(cx, cy, x, y) {
         var i, a = arguments, l = a.length,
             x0 = currentX, y0 = currentY;
 
         check(arguments, 0, 4, 4);
         checkcurrent();
 
-        for ( i = 0; i < l; i+=4 ) { 
-            this.ctx.quadraticCurveTo(  cx = x0 + a[i],
+        for (i = 0; i < l; i+=4) { 
+            this.ctx.quadraticCurveTo( cx = x0 + a[i],
                                     cy = y0 + a[i+1],
                                     x0 += a[i+2],
                                     y0 += a[i+3]);
         }
 
-        setCurrent( x0, y0 );
+        setCurrent(x0, y0);
         _lastQCP = [cx, cy];
         return this;
     },
 
     S = function() {    // Smooth bezier curve
-        if ( !_lastCCP ) {
+        if (!_lastCCP) {
             throw new Error("Last command was not a cubic bezier");
         }
 
@@ -820,10 +825,10 @@ var math = Math,
             cx0 = _lastCCP[0], cy0 = _lastCCP[1],
             cx1, cx2, cy1, cy2, x, y;
         
-        check( arguments, 0, 4, 4 );
+        check(arguments, 0, 4, 4);
         checkcurrent();
         
-        for ( i = 0; i < l; i+=4 ) {
+        for (i = 0; i < l; i+=4) {
             cx1 = x0 + (x0 - cx0);
             cy1 = y0 + (y0-cy0);
             cx2 = a[i];
@@ -831,17 +836,17 @@ var math = Math,
             x = a[i+2];
             y = a[i+3];
 
-            this.ctx.bezierCurveTo( cx1, cy1, cx2, cy2, x, y );
+            this.ctx.bezierCurveTo(cx1, cy1, cx2, cy2, x, y);
             x0 = x; y0 = y; cx0 = cx2; cy0 = cy2;
         }
 
-        setCurrent( x0, y0 );
+        setCurrent(x0, y0);
         _lastCCP = [cx0,cy0];
         return this;
     },
 
     s = function() {
-        if ( !_lastCCP ) {
+        if (!_lastCCP) {
             throw new Error("Last command was not a cubic bezier");
         }
         
@@ -850,10 +855,10 @@ var math = Math,
             cx0 = _lastCCP[0], cy0 = _lastCCP[1],
             cx1, cx2, cy1, cy2, x, y;
 
-        check( arguments, 0, 4, 4 );
+        check(arguments, 0, 4, 4);
         checkcurrent();
         
-        for ( i = 0; i < l; i+=4 ) {
+        for (i = 0; i < l; i+=4) {
             cx1 = x0 + (x0 - cx0);
             cy1 = y0 + (y0 - cy0);
             cx2 = x0 + a[i];
@@ -861,17 +866,17 @@ var math = Math,
             x = x0 + a[i+2];
             y = y0 + a[i+3];
 
-            this.ctx.bezierCurveTo( cx1, cy1, cx2, cy2, x, y );
+            this.ctx.bezierCurveTo(cx1, cy1, cx2, cy2, x, y);
             x0 = x; y0 = y; cx0 = cx2; cy0 = cy2;
         }
 
-        setCurrent( x0, y0 );
+        setCurrent(x0, y0);
         _lastCCP = [cx0, cy0];
         return this;
     },
 
     T = function() {
-        if ( !_lastQCP ) {
+        if (!_lastQCP) {
             throw new Error("Last command was not a cubic bezier");
         }
 
@@ -880,26 +885,26 @@ var math = Math,
             cx0 = _lastQCP[0], cy0 = _lastQCP[1],
             cx, cy, x, y;
 
-        check( arguments, 0, 2, 2 );
+        check(arguments, 0, 2, 2);
         checkcurrent();
 
-        for ( i = 0; i < l; i+=2 ) {
+        for (i = 0; i < l; i+=2) {
             cx = x0 + (x0 - cx0);
             cy = y0 + (y0 - cy0);
             x = arguments[i];
             y = arguments[i+1];
 
-            this.ctx.quadraticCurveTo( cx, cy, x, y );
+            this.ctx.quadraticCurveTo(cx, cy, x, y);
             x0 = x; y0 = y; cx0 = cx; cy0 = cy;
         }
 
-        setCurrent( x0, y0 );
+        setCurrent(x0, y0);
         _lastQCP = [cx0, cy0];
         return this;
     },
 
     t = function() {
-        if ( !_lastQCP ) {
+        if (!_lastQCP) {
             throw new Error("Last command was not a cubic bezier");
         }
 
@@ -908,34 +913,34 @@ var math = Math,
             cx0 = _lastQCP[0], cy0 = _lastQCP[1],
             cx, cy, x, y;
 
-        check( arguments, 0, 2, 2 );
+        check(arguments, 0, 2, 2);
         checkcurrent();
         
-        for ( i = 0; i < l; i+=2 ) {
+        for (i = 0; i < l; i+=2) {
             cx = x0 + (x0 - cx0);
             cy = y0 + (y0 - cy0);
             x = x0 + arguments[i];
             y = y0 + arguments[i+1];
             
-            this.ctx.quadraticCurveTo( cx, cy, x, y );
+            this.ctx.quadraticCurveTo(cx, cy, x, y);
             x0 = x; y0 = y; cx0 = cx; cy0 = cy;
         }
 
-        setCurrent( x0, y0 );
+        setCurrent(x0, y0);
         _lastQCP = [cx0, cy0];
         return this;
     },
 
         // Draw an ellipse segment from the current point to (x,y)
         // XXX: is this supposed to allow multiple arcs in a single call?
-    A = function( rx, ry, rotation, big, clockwise, x, y ) {
+    A = function(rx, ry, rotation, big, clockwise, x, y) {
         // This math is from Appendix F, Implementation Notes of 
         // the SVG specification.  See especially F.6.5.
         // http://www.w3.org/TR/SVG/implnote.html#ArcImplementationNotes
 
         // If either radius is 0, then just do a straight line
-        if ( !rx || !ry ) {
-            return L.call( this, x, y );
+        if (!rx || !ry) {
+            return L.call(this, x, y);
         }
 
         // Convert the flags to their boolean equivalents
@@ -950,8 +955,8 @@ var math = Math,
             // SVG specifies angles in degrees.  Convert to radians
             // and precompute some trig.
             phi = rotation * DEGREE,
-            sinphi = sin( phi ),
-            cosphi = cos( phi ),
+            sinphi = sin(phi),
+            cosphi = cos(phi),
 
             // Now, using the formulae in F.6.5 we compute the center point
             // (cx,cy) of the ellipse along with the start angle theta1
@@ -966,15 +971,15 @@ var math = Math,
             lambda, cx$, cy$, cx, cy, theta1, theta2, dtheta;
 
         // F.6.6: Step 1.5: correct radii if necessary: 
-        rx = abs( rx );  // F.6.6.1
-        ry = abs( ry );
+        rx = abs(rx);  // F.6.6.1
+        ry = abs(ry);
         lambda = x1$ * x1$ / (rx * rx) + y1$ * y1$ / (ry * ry); // F.6.6.2
         
-        if ( lambda > 1 ) { 
+        if (lambda > 1) { 
             // If this value is > 1, then the radii need to be adjusted
             // and we can skip step 2 below
-            rx *= sqrt( lambda );
-            ry *= sqrt( lambda );
+            rx *= sqrt(lambda);
+            ry *= sqrt(lambda);
             cx$ = cy$ = 0;
 
         } else {
@@ -985,9 +990,9 @@ var math = Math,
                 x1x1$ = x1$ * x1$,
                 y1y1$ = y1$ * y1$,
                 t = rxrx * y1y1$ + ryry * x1x1$;
-                t = sqrt( rxrx * ryry / t -1 );
+                t = sqrt(rxrx * ryry / t -1);
 
-            if ( big === clockwise ) {
+            if (big === clockwise) {
                 t = -t;
             }
             cx$ = t * rx * y1$ / ry;
@@ -1001,13 +1006,13 @@ var math = Math,
         // F.6.5.4: Step 4: compute theta1 and theta2
         tx = (x1$ - cx$) / rx;
         ty = (y1$ - cy$) / ry;
-        theta1 = angleBetweenVectors( 1, 0, tx, ty ); // F.6.5.5
-        dtheta = angleBetweenVectors( tx, ty, (-x1$ - cx$) / rx, (-y1$ - cy$) / ry); // F.6.5.6
+        theta1 = angleBetweenVectors(1, 0, tx, ty); // F.6.5.5
+        dtheta = angleBetweenVectors(tx, ty, (-x1$ - cx$) / rx, (-y1$ - cy$) / ry); // F.6.5.6
         
-        if ( clockwise && dtheta < 0 ) {
+        if (clockwise && dtheta < 0) {
             dtheta += TWOPI;
 
-        } else if ( !clockwise && dtheta > 0 ) {
+        } else if (!clockwise && dtheta > 0) {
             dtheta -= TWOPI;
         }
 
@@ -1016,14 +1021,14 @@ var math = Math,
         // Now after all that computation, we can implement the SVG
         // A command using an extension of the canvas arc() method
         // that allows stretching and rotation
-        this.ellipse( cx, cy, rx, ry, phi, theta1, theta2, !clockwise );
+        this.ellipse(cx, cy, rx, ry, phi, theta1, theta2, !clockwise);
         return this;
     },
 
-    a = function( rx, ry, rotation, big, clockwise, x, y ) {
+    a = function(rx, ry, rotation, big, clockwise, x, y) {
         checkcurrent();
 
-        A.call( this, rx, ry, rotation, big, clockwise, x + currentX, y + currentY);
+        A.call(this, rx, ry, rotation, big, clockwise, x + currentX, y + currentY);
 
         return this;
     },
@@ -1035,31 +1040,31 @@ var math = Math,
     // A generalization of the arc command above to allow x and y radii
     // and to allow rotation.  (The SVG A command uses this)
     // rotation/sa/ea => in radians
-    ellipse = function( cx, cy, rx, ry, rotation, sa, ea, anticlockwise ) {
+    ellipse = function(cx, cy, rx, ry, rotation, sa, ea, anticlockwise) {
         rotation = rotation || 0;
         sa = sa || 0;
         ea = ea === undefined ? TWOPI : ea;
 
         // compute the start and end points
-        var sp = rotatePoint( rx * cos(sa), ry * sin(sa), rotation ),
+        var sp = rotatePoint(rx * cos(sa), ry * sin(sa), rotation),
             sx = cx + sp[0],
             sy = cy + sp[1],
-            ep = rotatePoint( rx * cos(ea), ry * sin(ea), rotation ),
+            ep = rotatePoint(rx * cos(ea), ry * sin(ea), rotation),
             ex = cx + ep[0],
             ey = cy + ep[1];
-        ensure( this, sx, sy );
+        ensure(this, sx, sy);
         
-        this.ctx.translate( cx, cy );
-        this.ctx.rotate( rotation );
-        this.ctx.scale( rx / ry, 1 );
+        this.ctx.translate(cx, cy);
+        this.ctx.rotate(rotation);
+        this.ctx.scale(rx / ry, 1);
 
-        this.ctx.arc( 0, 0, ry, sa, ea, !!anticlockwise );
+        this.ctx.arc(0, 0, ry, sa, ea, !!anticlockwise);
 
-        this.ctx.scale( ry / rx, 1 );
-        this.ctx.rotate( -rotation );
-        this.ctx.translate( -cx, -cy );
+        this.ctx.scale(ry / rx, 1);
+        this.ctx.rotate(-rotation);
+        this.ctx.translate(-cx, -cy);
 
-        setCurrent( ex, ey );
+        setCurrent(ex, ey);
         return this;
     },
 
@@ -1067,15 +1072,15 @@ var math = Math,
     polygon = function() {
         var i, a = arguments, l = a.length;
         // Need at least 3 points for a polygon
-        if ( l < 6 ) {
+        if (l < 6) {
             throw new Error("not enough arguments");
         }
         
-        if ( l % 2 === 0 ) {
-            this.ctx.moveTo( a[0], a[1] );
+        if (l % 2 === 0) {
+            this.ctx.moveTo(a[0], a[1]);
 
-            for ( i = 2; i < l; i+=2 ) {
-                this.ctx.lineTo( a[i], a[i+1] );
+            for (i = 2; i < l; i+=2) {
+                this.ctx.lineTo(a[i], a[i+1]);
             }
 
         } else {
@@ -1088,16 +1093,16 @@ var math = Math,
                 y0 = (a[n*2-1] + a[1]) / 2,
                 temp_x, temp_y;
 
-            this.ctx.moveTo( x0, y0 );
+            this.ctx.moveTo(x0, y0);
 
             // Now arcTo each of the remaining points
-            for ( i = 0; i < n-1; i++ ) {
-                this.ctx.arcTo( temp_x = a[i*2], temp_y = a[i*2+1], a[i*2+2], a[i*2+3], radius, x0, y0 );
+            for (i = 0; i < n-1; i++) {
+                this.ctx.arcTo(temp_x = a[i*2], temp_y = a[i*2+1], a[i*2+2], a[i*2+3], radius, x0, y0);
                 x0 = temp_x; y0 = temp_y;
             }
 
             // Final arcTo back to the start
-            this.ctx.arcTo( a[n*2-2], a[n*2-1], a[0], a[1], radius, x0, y0 );
+            this.ctx.arcTo(a[n*2-2], a[n*2-1], a[0], a[1], radius, x0, y0);
         }
 
         return this;
@@ -1105,59 +1110,59 @@ var math = Math,
 
     // Parse an SVG path string and invoke the various SVG commands
     // Note that this does not call beginPath()
-    parseSVG = function( svg ) {
-        var matches = svg.match( SVGPATTERN ),
+    parseSVG = function(svg) {
+        var matches = svg.match(SVGPATTERN),
             match, parts, args, i, j, path = [];
 
-        if ( !matches ) {
+        if (!matches) {
             throw new Error("Bad path: " + svg);
         }
 
         // Each element of matches should begin with a SVG path letter
         // and be followed by a string of numbers separated by spaces
         // and/or commas
-        for( i = 0; (match = matches[i]); i++ ) {
+        for(i = 0; (match = matches[i]); i++) {
             args = [];
             args.cmd = match.charAt(0);
             // Get rest and trim whitespace from it
-            parts = match.match( NUMBER ) || [];
+            parts = match.match(NUMBER) || [];
 
-            for( j = 0; j < parts.length; j++ ) {
+            for(j = 0; j < parts.length; j++) {
                 args[j] = +parts[j];
             }
 
-            path.push( args );
+            path.push(args);
         }
 
         return path;
     },
 
     Path = Shape.extend({
-        init: function( svgpath ) {
-            this.svgpath = parseSVG( svgpath );
-            this._super( 0, 0 );
+        init: function(svgpath) {
+            this.svgpath = parseSVG(svgpath);
+            this._super(0, 0);
             
-            if ( this.svgpath[0].cmd.toLowerCase() == "m" ) {
+            if (this.svgpath[0].cmd.toLowerCase() == "m") {
                 this.x = this.svgpath[0][0];
                 this.y = this.svgpath[0][1];
             }
         },
 
-        draw: function ( ctx ) {
+        draw: function (ctx) {
         var svgpath = this.svgpath, i, l;
 
-            this.applyStyle( ctx );
-            this.setTransform( ctx );
+            this.applyStyle(ctx);
+            this.setTransform(ctx);
 
             ctx.beginPath();
-            Cevent.setContext( ctx );
+            Cevent.setContext(ctx);
 
-            for ( i = 0, l = svgpath.length; i < l ; i++ ) {
-                Cevent[ svgpath[i].cmd ].apply( Cevent, svgpath[i] );
+            for (i = 0, l = svgpath.length; i < l ; i++) {
+                Cevent[ svgpath[i].cmd ].apply(Cevent, svgpath[i]);
             }
 
-            if ( this.fill ) { ctx.fill(); }
-            if ( this.stroke ) { ctx.stroke(); }
+            if (this.fill) { ctx.fill(); }
+            if (this.stroke) { ctx.stroke(); }
 
         }
         
@@ -1167,16 +1172,16 @@ var math = Math,
 extend(Cevent, {
     
     // distancia entre dos puntos
-    // distance( {x:100, y:45}, {x:13, y:99} ) => 102.3
+    // distance({x:100, y:45}, {x:13, y:99}) => 102.3
     distance: distance,
     
     __zoom: 1,
     
     Shape: Shape,
     // iniciar encadenamiento, ejemplo:
-    //    Cevent.setContext( ctx ).M( 50, 50 ).h( 50 ).v( -50 ).z();
+    //    Cevent.setContext(ctx).M(50, 50).h(50).v(-50).z();
     //    ctx.fill();
-    setContext: function( ctx ) {
+    setContext: function(ctx) {
         this.ctx = ctx;
         // reset flags
         setCurrent(0,0);
@@ -1256,20 +1261,19 @@ extend(Cevent, {
 
 // verificar que arcTo este bien implementado, de lo contrario reemplazarlo
 (function() {
+// excanvas/FlashCanvas
+if (!testCtx) { return; }
 
-testCtx.moveTo(30, 30);
-testCtx.arcTo(60, 30, 60, 60, 30);
-testCtx.lineTo(60, 60);
-testCtx.fill();
+var rect = Rect(40, 40, 40, 40, 5);
+    rect.draw(testCtx);
 
-// si esta bien implementado esto debe ser 0
-if (testCtx.getImageData(58, 31, 1, 1).data[3]) {
-    
+// si esta bien implementado esto debe ser 255
+if (!testCtx.getImageData(79, 60, 1, 1).data[3]) {
     var originalArcTo = CanvasRenderingContext2D.prototype.arcTo;
     // Código adaptado de (http://philip.html5.org/demos/canvas/arcto-emulate.html)
     // Copyright (c) 2009 Philip Taylor
     // Released under the MIT license (http://www.opensource.org/licenses/mit-license.php)
-    function dist2(x0, y0, x1, y1) {
+    var dist2 = function (x0, y0, x1, y1) {
         return (x0 - x1) * (x0 - x1) + (y0 - y1) *(y0 - y1);
     }
 
@@ -1335,16 +1339,29 @@ if (testCtx.getImageData(58, 31, 1, 1).data[3]) {
 }
 })();
 
+// excanvas no soporta isPointInPath :(
+if (window.FlashCanvas) {
+    // El elemento debe estar en el DOM para inicializar FlashCanvas
+    document.body.appendChild(cv);
+    FlashCanvas.initElement(cv);
+    testCtx = cv.getContext("2d");
+    cv.style.display = "none";
+}
+
+if (testCtx) {
 // Mayor rendimiento en hitTest http://jsperf.com/canvas-event-js-hittest-performance
 testCtx.fill = testCtx.stroke = function(){};
+}
+
+
 
 /* Registrar Objetos */
-Cevent.register( "image", Img );
-Cevent.register( "circle", Circle );
-Cevent.register( "arc", Arc );
-Cevent.register( "ellipse", Ellipse );
-Cevent.register( "rect", Rect );
-Cevent.register( "text", Text );
-Cevent.register( "line", Line );
-Cevent.register( "path", Path );
+Cevent.register("image", Img);
+Cevent.register("circle", Circle);
+Cevent.register("arc", Arc);
+Cevent.register("ellipse", Ellipse);
+Cevent.register("rect", Rect);
+Cevent.register("text", Text);
+Cevent.register("line", Line);
+Cevent.register("path", Path);
 })(Cevent, this);

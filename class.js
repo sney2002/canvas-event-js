@@ -43,7 +43,7 @@
 		function Class(args){
 				if ( this instanceof arguments.callee ) {
 					if ( !initializing && this.init )
-						this.init.apply( this, args.callee ? args : arguments );
+						this.init.apply( this, args && args.callee ? args : arguments );
 				} else
 					return new arguments.callee( arguments );
 			};
